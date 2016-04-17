@@ -6,6 +6,7 @@
 #include "include/simulat_timer.h"
 #include "include/key.h"
 #include "include/knob.h"
+#include "include/tft.h"
 
 
 void main(void)
@@ -21,10 +22,7 @@ void main(void)
 
     while (1)
     {
-        if (st_tcf(0) == 1)
-        {
-            key_detect();
-        }
+
         if (st_tcf(1) == 1)
         {
             if (log != (knob_v = get_knob_val()))
@@ -34,6 +32,45 @@ void main(void)
             }
         }
         
+        
+        switch (get_key_mean(UP_KEY))
+        {
+        case N_KEY:
+            //printf("ÎÞ¼ü\n");
+            break;
+        case S_KEY:
+            printf("µ¥»÷\n");
+            tft_left();
+            break;
+        case D_KEY:
+            printf("Ë«»÷\n");
+            tft_up();
+            break;
+        case L_KEY:
+            printf("³¤°´\n");
+            break;
+        default:
+            break;
+        }
+        switch (get_key_mean(DOWN_KEY))
+        {
+        case N_KEY:
+            //printf("ÎÞ¼ü\n");
+            break;
+        case S_KEY:
+            printf("µ¥»÷\n");
+            tft_right();
+            break;
+        case D_KEY:
+            printf("Ë«»÷\n");
+            tft_down();
+            break;
+        case L_KEY:
+            printf("³¤°´\n");
+            break;
+        default:
+            break;
+        }
         switch (get_key_mean(OK_KEY))
         {
         case N_KEY:
@@ -41,6 +78,25 @@ void main(void)
             break;
         case S_KEY:
             printf("µ¥»÷\n");
+            tft_ok();
+            break;
+        case D_KEY:
+            printf("Ë«»÷\n");
+            break;
+        case L_KEY:
+            printf("³¤°´\n");
+            break;
+        default:
+            break;
+        }
+        switch (get_key_mean(RET_KEY))
+        {
+        case N_KEY:
+            //printf("ÎÞ¼ü\n");
+            break;
+        case S_KEY:
+            printf("µ¥»÷\n");
+            tft_ret();
             break;
         case D_KEY:
             printf("Ë«»÷\n");

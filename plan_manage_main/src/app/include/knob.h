@@ -1,7 +1,7 @@
 /*
- * knob.h - 提供旋钮输入的接口函数
+ * knob.h - �ṩ��ť����Ľӿں���
  *
- * 使用的是一个数字旋钮，利用计数来采集输入
+ * ʹ�õ���һ��������ť�����ü������ɼ�����
  */
 
 #ifndef KNOB_H
@@ -14,41 +14,41 @@
 
 
 /*
- * knob_init() - 为旋钮输入而执行的初始化
+ * knob_init() - Ϊ��ť�����ִ�еĳ�ʼ��
  *
- * 旋钮的检测初始化后默认是禁止的
+ * ��ť�ļ���ʼ����Ĭ���ǽ�ֹ��
  */
 void knob_init(void);
 
 
 
 /*
- * knob_enable() - 使能旋钮脉冲检测
+ * knob_enable() - ʹ����ť������
  */
 void knob_enable(void);
 
 
 /*
- * knob_disable() - 禁止旋钮脉冲检测
+ * knob_disable() - ��ֹ��ť������
  */
 void knob_disable(void);
 
 
 /*
- * knob_clear() - 清除旋钮值
+ * knob_clear() - �����ťֵ
  */
 void knob_clear(void);
 
 /*
- * get_knob_val() - 返回旋钮值
+ * get_knob_val() - ������ťֵ
  */
 int32_t get_knob_val(void);
 
 
 /*
- * knob_detect() - 旋钮检测
+ * knob_detect() - ��ť���
  *
- * 这个函数需要在旋钮编码器的A相输出发生沿跳变时调用，即上下沿中断时
+ * ���������Ҫ����ť��������A���������������ʱ���ã����������ж�ʱ
  */
 void knob_detect(void);
 

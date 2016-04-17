@@ -1,5 +1,5 @@
 /*
- * tft.h - tftæ¥å£
+ * tft.h - tft½Ó¿Ú
  */
 
 
@@ -7,7 +7,19 @@
 #define TFT_H
 
 
+typedef struct input_limit_
+{
+    int16_t max;
+    int16_t min;
+} input_limit;
+
 void tft_init(void);
+
+void tft_send_cmd(const char *cmd);
+
+void tft_left(void);
+
+void tft_right(void);
 
 void tft_up(void);
 
@@ -17,6 +29,10 @@ void tft_ok(void);
 
 void tft_ret(void);
 
+
+int16_t get_value_of_kvp(char *name);
+
+input_limit tft_input_limit(char *name);
 
 
 

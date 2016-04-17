@@ -1,15 +1,16 @@
 /*
- * pm_init.c - å¯¹æ•´ä¸ªåº”ç”¨ç¨‹åºçš„åˆå§‹åŒ–
+ * pm_init.c - ¶ÔÕû¸öÓ¦ÓÃ³ÌĞòµÄ³õÊ¼»¯
  */
 
 #include "include/simulat_timer.h"
 #include "include/key.h"
 #include "include/knob.h"
 #include "include/debug.h"
+#include "include/tft.h"
 
 
 /*
- * pm_init() - åˆå§‹åŒ–
+ * pm_init() - ³õÊ¼»¯
  */
 void pm_init(void)
 {
@@ -17,4 +18,6 @@ void pm_init(void)
     key_init();
     knob_init();
     st_base_init();
+    tft_init();
+    return;
 }

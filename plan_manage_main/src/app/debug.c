@@ -1,5 +1,5 @@
 /*
- * debug.c - è°ƒè¯•åŠŸèƒ½çš„å®ç°
+ * debug.c - µ÷ÊÔ¹¦ÄÜµÄÊµÏÖ
  */
 
 #include <stdint.h>
@@ -15,7 +15,7 @@ volatile float recval_debug_uart[26];
 
 
 /*
- * debug_init() - åˆå§‹åŒ–è°ƒè¯•åŠŸèƒ½
+ * debug_init() - ³õÊ¼»¯µ÷ÊÔ¹¦ÄÜ
  */
 void debug_init(void)
 {
@@ -24,11 +24,11 @@ void debug_init(void)
 }
 
 /*
- * str_to_fp() - å°†å­—ç¬¦ä¸²è½¬æ¢ä¸ºæµ®ç‚¹æ•°
- * @str: å­—ç¬¦ä¸²åœ°å€
- * @len: å­—ç¬¦ä¸²é•¿åº¦
+ * str_to_fp() - ½«×Ö·û´®×ª»»Îª¸¡µãÊı
+ * @str: ×Ö·û´®µØÖ·
+ * @len: ×Ö·û´®³¤¶È
  *
- * è¿™ä¸ªå‡½æ•°ä¼ å…¥çš„å­—ç¬¦ä¸²æ ¼å¼åº”ç¬¦åˆcè¯­è¨€æ ‡å‡†æµ®ç‚¹æ ¼å¼ï¼Œå¹¶ä¸”æ²¡æœ‰'\0'
+ * Õâ¸öº¯Êı´«ÈëµÄ×Ö·û´®¸ñÊ½Ó¦·ûºÏcÓïÑÔ±ê×¼¸¡µã¸ñÊ½£¬²¢ÇÒÃ»ÓĞ'\0'
  */
 float str_to_fp(char str[], uint8_t len)
 {
@@ -57,7 +57,7 @@ float str_to_fp(char str[], uint8_t len)
 }
 
 /*
- * rec_debug_uart() - æ¥æ”¶uartä¼ å…¥çš„è°ƒè¯•ä¿¡æ¯ï¼Œå¹¶è½¬æ¢ä¸ºæµ®ç‚¹æ•°
+ * rec_debug_uart() - ½ÓÊÕuart´«ÈëµÄµ÷ÊÔĞÅÏ¢£¬²¢×ª»»Îª¸¡µãÊı
  *
  */
 void rec_debug_uart(void)
@@ -190,11 +190,11 @@ void rec_debug_uart(void)
         index = 0;
         if (ch == '#')
         {
-            printf("æ¸…é™¤ç¼“å­˜æˆåŠŸ\n");
+            printf("Çå³ı»º´æ³É¹¦\n");
         }
         else
         {
-            printf("è®¾ç½®%cä¸º%s\n", ch, str_log);
+            printf("ÉèÖÃ%cÎª%s\n", ch, str_log);
         }
     }
     return;
