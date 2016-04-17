@@ -1,5 +1,5 @@
 /* 
- * config.h - é…ç½®æ•´ä¸ªå·¥ç¨‹
+ * config.h - ÅäÖÃÕû¸ö¹¤³Ì
  *
  */
 
@@ -10,20 +10,20 @@
 
 
 /*
- * æ¨¡æ‹Ÿå®šæ—¶å™¨ä½¿ç”¨çš„å®šæ—¶å™¨
+ * Ä£Äâ¶¨Ê±Æ÷Ê¹ÓÃµÄ¶¨Ê±Æ÷
  */
 #define SIMULAT_TIMER_PITX		PIT1
 
 
 /*
- * è°ƒè¯•æ¨¡å—
+ * µ÷ÊÔÄ£¿é
  */
 #define DEBUG_UARTX		UART1
 
 
 
 /*
- * è¾“å…¥æ¨¡å—
+ * ÊäÈëÄ£¿é
  */
 #define UP_KEY_PINX     PTE20
 #define DOWN_KEY_PINX   PTA17
@@ -35,16 +35,16 @@
 #define MB_KEY_PINX     PTA16
 #define MUVB_KEY_PINX   PTD6
 
-#define KNOB_A_PINX     PTD3
-#define KNOB_B_PINX     PTD4
-#define KNOB_KEY_PINX   PTD5
+#define KNOB_A_PINX     PTD6
+#define KNOB_B_PINX     PTD7
+#define KNOB_KEY_PINX   PTD4    // PTD5
 
 
 
 /*
- * æ˜¾ç¤ºæ¨¡å—
+ * ÏÔÊ¾Ä£¿é
  */
-#define TFT_UARTX       UART2
+#define TFT_UARTX       UART2  // PTD2,PTD3
 
 
 

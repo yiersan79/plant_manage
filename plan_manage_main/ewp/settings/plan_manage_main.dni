@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-1423666763
+Checksum=2065568720
 [CodeCoverage]
 Enabled=_ 0
 [Exceptions]
@@ -47,7 +47,7 @@ MultiCoreRunAll=1
 CStepIntDis=_ 0
 TraceBufferSize=0x00010000
 TraceStallIfFIFOFull=0x00000000
-TracePortSize=0x00000000
+TracePortSize=0x00000004
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -66,7 +66,8 @@ Exclusions=
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Count=0
+Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\src\app\main.c}.81.13" 0 0 1 "" 0 "" 0
+Count=1
 [Aliases]
 Count=0
 SuppressDialog=0

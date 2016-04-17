@@ -1,17 +1,17 @@
 /* 
- * key.c - ç›‘æµ‹å¹¶é‡‡é›†æŒ‰é”®çš„è¾“å…¥
+ * key.c - ¼à²â²¢²É¼¯°´¼üµÄÊäÈë
  *
- * å…±æœ‰å››ç§è¾“å…¥ï¼Œæ— é”®ï¼Œå•å‡»ï¼ŒåŒå‡»ï¼Œé•¿å‡»ã€‚
- * æ¯10mséœ€è¦é‡‡é›†ä¸€æ¬¡ioçŠ¶æ€ã€‚
- * æ¯å¢å‡ä¸€ä¸ªæŒ‰é”®ï¼Œéœ€è¦è®¾ç½®çš„æœ‰:
+ * ¹²ÓĞËÄÖÖÊäÈë£¬ÎŞ¼ü£¬µ¥»÷£¬Ë«»÷£¬³¤»÷¡£
+ * Ã¿10msĞèÒª²É¼¯Ò»´Îio×´Ì¬¡£
+ * Ã¿Ôö¼õÒ»¸ö°´¼ü£¬ĞèÒªÉèÖÃµÄÓĞ:
  *
- *      key_typeæšä¸¾ç±»å‹ä¸­å¯¹åº”çš„æšä¸¾å…ƒç´ 
+ *      key_typeÃ¶¾ÙÀàĞÍÖĞ¶ÔÓ¦µÄÃ¶¾ÙÔªËØ
  *
- *      å¯¹åº”çš„key_infomationå˜é‡
+ *      ¶ÔÓ¦µÄkey_infomation±äÁ¿
  *
- *      key_init()å‡½æ•°ä¸­å¯¹åº”çš„åˆå§‹åŒ–æ¡ç›®
- *      key_detect()å‡½æ•°ä¸­å¯¹åº”æ£€æµ‹æ¡ç›®
- *      get_key_mean()å‡½æ•°ä¸­å¯¹åº”è·å–æ¡ç›®
+ *      key_init()º¯ÊıÖĞ¶ÔÓ¦µÄ³õÊ¼»¯ÌõÄ¿
+ *      key_detect()º¯ÊıÖĞ¶ÔÓ¦¼ì²âÌõÄ¿
+ *      get_key_mean()º¯ÊıÖĞ¶ÔÓ¦»ñÈ¡ÌõÄ¿
  */
 
 
@@ -24,11 +24,11 @@
 
 
 /*
- * key_state - è¡¨ç¤ºæŒ‰é”®çš„çŠ¶æ€
- * key_state_0   åˆå§‹çŠ¶æ€ï¼Œæˆ–è€…è¡¨ç¤ºç¬¬ä¸€æ¬¡å•å‡»çŠ¶æ€
- * key_state_1   æ¶ˆæŠ–å’Œç¡®è®¤çŠ¶æ€ï¼Œæˆ–è¡¨ç¤ºç¬¬äºŒæ¬¡å•å‡»çŠ¶æ€
- * key_state_2   æŒ‰é”®è®¡æ—¶çŠ¶æ€
- * key_state_3   æŒ‰é”®ç­‰å¾…é‡Šæ”¾çŠ¶æ€
+ * key_state - ±íÊ¾°´¼üµÄ×´Ì¬
+ * key_state_0   ³õÊ¼×´Ì¬£¬»òÕß±íÊ¾µÚÒ»´Îµ¥»÷×´Ì¬
+ * key_state_1   Ïû¶¶ºÍÈ·ÈÏ×´Ì¬£¬»ò±íÊ¾µÚ¶ş´Îµ¥»÷×´Ì¬
+ * key_state_2   °´¼ü¼ÆÊ±×´Ì¬
+ * key_state_3   °´¼üµÈ´ıÊÍ·Å×´Ì¬
  */
 typedef enum key_state_
 {
@@ -36,7 +36,7 @@ typedef enum key_state_
 } key_state;
 
 /*
- * IOçŠ¶æ€ç¬¦å·å®šä¹‰
+ * IO×´Ì¬·ûºÅ¶¨Òå
  */
 typedef enum state_sign_
 {
@@ -101,7 +101,7 @@ static volatile key_infomation
 
 
 /*
- * key_init() - æŒ‰é”®æ¨¡å—åˆå§‹åŒ–
+ * key_init() - °´¼üÄ£¿é³õÊ¼»¯
  *
  */
 void key_init(void)
@@ -118,7 +118,7 @@ void key_init(void)
 
 
     /*
-     * åˆå§‹åŒ–å®šæ—¶å™¨ä¸º10mså®šæ—¶ä¸­æ–­ï¼Œç”¨äºæŒ‰é”®æ£€æµ‹çš„å®šæ—¶æ‰§è¡Œ
+     * ³õÊ¼»¯¶¨Ê±Æ÷Îª10ms¶¨Ê±ÖĞ¶Ï£¬ÓÃÓÚ°´¼ü¼ì²âµÄ¶¨Ê±Ö´ĞĞ
      */
 
 
@@ -127,32 +127,32 @@ void key_init(void)
 
 
 /*
- * key_read_base - æŒ‰é”®åŸºç¡€è¯»å–å‡½æ•°ï¼Œ
- * @key_info: è¦æ£€æµ‹æŒ‰é”®çš„æ‰€éœ€ä¿¡æ¯,å¿…é¡»åœ¨æ˜¯å…¨å±€å˜é‡åŒºä¸­å­˜å‚¨çš„
+ * key_read_base - °´¼ü»ù´¡¶ÁÈ¡º¯Êı£¬
+ * @key_info: Òª¼ì²â°´¼üµÄËùĞèĞÅÏ¢,±ØĞëÔÚÊÇÈ«¾Ö±äÁ¿ÇøÖĞ´æ´¢µÄ
  *
- * è¿™ä¸ªå‡½æ•°è¿”å› N_KEY,S_KEY,L_KEYä¸‰ç§æƒ…å†µ
+ * Õâ¸öº¯Êı·µ»Ø N_KEY,S_KEY,L_KEYÈıÖÖÇé¿ö
  */
 key_mean key_read_base(volatile key_infomation *key_info)
 {
     state_sign key_state_io;
     key_mean key_m = N_KEY;
 
-    key_state_io = (*((*key_info).get_state_io))();  // è·å–ioçŠ¶æ€
+    key_state_io = (*((*key_info).get_state_io))();  // »ñÈ¡io×´Ì¬
     switch((*key_info).state_base)
     {
     case key_state_0:
         if (key_state_io == VALID)
         {
-            (*key_info).state_base = key_state_1;      // æŒ‰é”®æŒ‰ä¸‹åé¦–å…ˆè¿›å…¥æ¶ˆæŠ–å’ŒæŒ‰é”®ç¡®
-                                                    // è®¤çŠ¶æ€
+            (*key_info).state_base = key_state_1;      // °´¼ü°´ÏÂºóÊ×ÏÈ½øÈëÏû¶¶ºÍ°´¼üÈ·
+                                                    // ÈÏ×´Ì¬
         }
         break;
     case key_state_1:
         if (key_state_io == VALID)
         {
             (*key_info).time_base = 0;
-            (*key_info).state_base = key_state_2;      // æŒ‰é”®å¦‚æœä»ç„¶æŒ‰ä¸‹ï¼Œåˆ™æ¶ˆæŠ–å®Œæˆï¼Œ
-                                                    // çŠ¶æ€è½¬æ¢,æ­¤æ—¶è¿”å›æ— æŒ‰é”®äº‹ä»¶
+            (*key_info).state_base = key_state_2;      // °´¼üÈç¹ûÈÔÈ»°´ÏÂ£¬ÔòÏû¶¶Íê³É£¬
+                                                    // ×´Ì¬×ª»»,´ËÊ±·µ»ØÎŞ°´¼üÊÂ¼ş
         }
         else
         {
@@ -162,20 +162,20 @@ key_mean key_read_base(volatile key_infomation *key_info)
     case key_state_2:
         if (key_state_io == INVALID)
         {
-            key_m = S_KEY;                           // æ­¤æ—¶æŒ‰é”®é‡Šæ”¾è¯´æ˜ä¸ºä¸€æ¬¡çŸ­æ“ä½œ
+            key_m = S_KEY;                           // ´ËÊ±°´¼üÊÍ·ÅËµÃ÷ÎªÒ»´Î¶Ì²Ù×÷
             (*key_info).state_base = key_state_0;
         }
-        else if (++(*key_info).time_base > 100)       // ç»§ç»­æŒ‰ä¸‹ï¼Œè®¡æ—¶åŠ 10msï¼Œå³æœ¬å‡½
-                                                    // æ•°è°ƒç”¨å‘¨æœŸ
+        else if (++(*key_info).time_base > 100)       // ¼ÌĞø°´ÏÂ£¬¼ÆÊ±¼Ó10ms£¬¼´±¾º¯
+                                                    // Êıµ÷ÓÃÖÜÆÚ
         {
-            key_m = L_KEY;                           // æŒ‰ä¸‹æ—¶é—´å¤§äº1sï¼Œè¿”å› é•¿æŒ‰é”®
-            (*key_info).state_base = key_state_3;      // è½¬æ¢ä¸ºç­‰å¾…æŒ‰é”®é‡Šæ”¾çŠ¶æ€
+            key_m = L_KEY;                           // °´ÏÂÊ±¼ä´óÓÚ1s£¬·µ»Ø ³¤°´¼ü
+            (*key_info).state_base = key_state_3;      // ×ª»»ÎªµÈ´ı°´¼üÊÍ·Å×´Ì¬
         }
         break;
     case key_state_3:
         if (key_state_io == INVALID)
         {
-            (*key_info).state_base = key_state_0;      // æŒ‰é”®æ­¤æ—¶å·²é‡Šæ”¾ï¼Œè½¬æ¢ä¸ºåˆå§‹çŠ¶æ€
+            (*key_info).state_base = key_state_0;      // °´¼ü´ËÊ±ÒÑÊÍ·Å£¬×ª»»Îª³õÊ¼×´Ì¬
         }
         break;
     default:
@@ -185,10 +185,10 @@ key_mean key_read_base(volatile key_infomation *key_info)
 }
 
 /*
- * key_read - æŒ‰é”®è¯»å–å‡½æ•°
- * @key_info: è¦æ£€æµ‹çš„æŒ‰é”®æ‰€éœ€çš„ä¿¡æ¯ï¼Œå¿…é¡»æ˜¯åœ¨å…¨å±€å˜é‡åŒºä¸­å­˜å‚¨çš„
+ * key_read - °´¼ü¶ÁÈ¡º¯Êı
+ * @key_info: Òª¼ì²âµÄ°´¼üËùĞèµÄĞÅÏ¢£¬±ØĞëÊÇÔÚÈ«¾Ö±äÁ¿ÇøÖĞ´æ´¢µÄ
  *
- * è¿™ä¸ªå‡½æ•°ä¼šè¿”å›N_KEY,S_KEY,D_KEYï¼ŒL_KEYå››æƒ…å†µ
+ * Õâ¸öº¯Êı»á·µ»ØN_KEY,S_KEY,D_KEY£¬L_KEYËÄÇé¿ö
  */
 key_mean key_read(volatile key_infomation *key_info)
 {
@@ -201,17 +201,17 @@ key_mean key_read(volatile key_infomation *key_info)
     case key_state_0:
         if (key_m_temp == S_KEY)
         {
-            (*key_info).time = 0;        // ç¬¬ä¸€æ¬¡å•å‡»çŠ¶æ€ï¼Œä»ç„¶è¿”å›æ— é”®ï¼Œåˆ°ä¸‹ä¸ªå‘¨æœŸ
-                                        // åˆ¤æ–­æ˜¯å¦å‡ºç°åŒå‡»
+            (*key_info).time = 0;        // µÚÒ»´Îµ¥»÷×´Ì¬£¬ÈÔÈ»·µ»ØÎŞ¼ü£¬µ½ÏÂ¸öÖÜÆÚ
+                                        // ÅĞ¶ÏÊÇ·ñ³öÏÖË«»÷
             (*key_info).state = key_state_1;
         }
         else
         {
-            key_m = key_m_temp;           // å¯¹äºéå•å‡»ï¼Œè¿”å›åŸäº‹ä»¶
+            key_m = key_m_temp;           // ¶ÔÓÚ·Çµ¥»÷£¬·µ»ØÔ­ÊÂ¼ş
         }
         break;
     case key_state_1:
-        if (key_m_temp == S_KEY)         // åˆä¸€æ¬¡å•å‡»ï¼Œé—´éš” < 300ms
+        if (key_m_temp == S_KEY)         // ÓÖÒ»´Îµ¥»÷£¬¼ä¸ô < 300ms
         {
             key_m = D_KEY;
             (*key_info).state = key_state_0;
@@ -220,8 +220,8 @@ key_mean key_read(volatile key_infomation *key_info)
         {
             if (++(*key_info).time > 30)
             {
-                key_m = S_KEY;           // 300mså†…æ²¡æœ‰å†å‡ºç°å•å‡»äº‹ä»¶ï¼Œåˆ™è¿”å›ä¸Šä¸€æ¬¡å•
-                                         // å‡»äº‹ä»¶
+                key_m = S_KEY;           // 300msÄÚÃ»ÓĞÔÙ³öÏÖµ¥»÷ÊÂ¼ş£¬Ôò·µ»ØÉÏÒ»´Îµ¥
+                                         // »÷ÊÂ¼ş
                 (*key_info).state = key_state_0;
             }
         }
@@ -234,11 +234,11 @@ key_mean key_read(volatile key_infomation *key_info)
 
 
 /*
- * key_detect() - æ£€æµ‹æŒ‰é”®
+ * key_detect() - ¼ì²â°´¼ü
  *
- * è¿™ä¸ªå‡½æ•°ä»…åœ¨N_KEYçŠ¶æ€æ—¶è®°å½•æŒ‰é”®ä¿¡æ¯ï¼ŒN_KEYæ˜¯åœ¨åº”ç”¨ç¨‹åºè·å–æŒ‰é”®ä¿¡æ¯çš„æ—¶å€™åŒæ—¶è¢«è®¾
- * ç½®çš„ï¼Œè¿™æ ·åšçš„ç›®çš„æ˜¯ä¿è¯é‡‡é›†åˆ°çš„æŒ‰é”®ä¸€å®šä¼šè¢«æ‰§è¡Œ
- * è¦æ±‚æ¯éš”10msè°ƒç”¨ä¸€æ¬¡
+ * Õâ¸öº¯Êı½öÔÚN_KEY×´Ì¬Ê±¼ÇÂ¼°´¼üĞÅÏ¢£¬N_KEYÊÇÔÚÓ¦ÓÃ³ÌĞò»ñÈ¡°´¼üĞÅÏ¢µÄÊ±ºòÍ¬Ê±±»Éè
+ * ÖÃµÄ£¬ÕâÑù×öµÄÄ¿µÄÊÇ±£Ö¤²É¼¯µ½µÄ°´¼üÒ»¶¨»á±»Ö´ĞĞ
+ * ÒªÇóÃ¿¸ô10msµ÷ÓÃÒ»´Î
  */
 void key_detect(void)
 {
@@ -285,9 +285,9 @@ void key_detect(void)
 
 
 /*
- * get_key_mean() - å¾—åˆ°æŒ‡å®šçš„æŒ‰é”®ä¿¡æ¯
+ * get_key_mean() - µÃµ½Ö¸¶¨µÄ°´¼üĞÅÏ¢
  *
- * è¿™ä¸ªå‡½æ•°ä¸­åœ¨å–å¾—ä¿¡æ¯åä¼šå°†å¯¹åº”æŒ‰é”®é‡æ–°æ ‡è®°ä¸ºN_KEY
+ * Õâ¸öº¯ÊıÖĞÔÚÈ¡µÃĞÅÏ¢ºó»á½«¶ÔÓ¦°´¼üÖØĞÂ±ê¼ÇÎªN_KEY
  */
 key_mean get_key_mean(key_type key_t)
 {
@@ -335,4 +335,18 @@ key_mean get_key_mean(key_type key_t)
         break;
     }
     return key_m;
+}
+
+
+void clear_key_m(void)
+{
+    down_key_info.key_m = N_KEY;
+    up_key_info.key_m = N_KEY;
+    ok_key_info.key_m = N_KEY;
+    ret_key_info.key_m = N_KEY;
+    ams_key_info.key_m = N_KEY;
+    wifi_key_info.key_m = N_KEY;
+    mr_key_info.key_m = N_KEY;
+    mb_key_info.key_m = N_KEY;
+    muvb_key_info.key_m = N_KEY;
 }

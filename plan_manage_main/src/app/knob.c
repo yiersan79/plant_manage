@@ -1,7 +1,7 @@
 /*
- * knob.c - æä¾›æ—‹é’®è¾“å…¥çš„æ¥å£å‡½æ•°
+ * knob.c - Ìá¹©ĞıÅ¥ÊäÈëµÄ½Ó¿Úº¯Êı
  *
- * ä½¿ç”¨çš„æ˜¯ä¸€ä¸ªæ•°å­—æ—‹é’®ï¼Œåˆ©ç”¨è®¡æ•°æ¥é‡‡é›†è¾“å…¥
+ * Ê¹ÓÃµÄÊÇÒ»¸öÊı×ÖĞıÅ¥£¬ÀûÓÃ¼ÆÊıÀ´²É¼¯ÊäÈë
  */
 
 #include <stdint.h>
@@ -20,9 +20,9 @@ static volatile int32_t knob_val;
 
 
 /*
- * knob_init() - ä¸ºæ—‹é’®è¾“å…¥è€Œæ‰§è¡Œçš„åˆå§‹åŒ–
+ * knob_init() - ÎªĞıÅ¥ÊäÈë¶øÖ´ĞĞµÄ³õÊ¼»¯
  *
- * æ—‹é’®çš„æ£€æµ‹åˆå§‹åŒ–åé»˜è®¤æ˜¯ç¦æ­¢çš„
+ * ĞıÅ¥µÄ¼ì²â³õÊ¼»¯ºóÄ¬ÈÏÊÇ½ûÖ¹µÄ
  */
 void knob_init(void)
 {
@@ -35,7 +35,7 @@ void knob_init(void)
 
 
 /*
- * knob_enable() - ä½¿èƒ½æ—‹é’®è„‰å†²æ£€æµ‹
+ * knob_enable() - Ê¹ÄÜĞıÅ¥Âö³å¼ì²â
  */
 void knob_enable(void)
 {
@@ -44,7 +44,7 @@ void knob_enable(void)
 }
 
 /*
- * knob_disable() - ç¦æ­¢æ—‹é’®è„‰å†²æ£€æµ‹
+ * knob_disable() - ½ûÖ¹ĞıÅ¥Âö³å¼ì²â
  */
 void knob_disable(void)
 {
@@ -55,7 +55,7 @@ void knob_disable(void)
 
 
 /*
- * knob_clear() - æ¸…é™¤æ—‹é’®å€¼
+ * knob_clear() - Çå³ıĞıÅ¥Öµ
  */
 void knob_clear(void)
 {
@@ -64,7 +64,7 @@ void knob_clear(void)
 }
 
 /*
- * get_knob_val() - è¿”å›æ—‹é’®å€¼
+ * get_knob_val() - ·µ»ØĞıÅ¥Öµ
  */
 int32_t get_knob_val(void)
 {
@@ -73,9 +73,9 @@ int32_t get_knob_val(void)
 
 
 /*
- * knob_detect() - æ—‹é’®æ£€æµ‹
+ * knob_detect() - ĞıÅ¥¼ì²â
  *
- * è¿™ä¸ªå‡½æ•°éœ€è¦åœ¨æ—‹é’®ç¼–ç å™¨çš„Aç›¸è¾“å‡ºå‘ç”Ÿæ²¿è·³å˜æ—¶è°ƒç”¨ï¼Œå³ä¸Šä¸‹æ²¿ä¸­æ–­æ—¶
+ * Õâ¸öº¯ÊıĞèÒªÔÚĞıÅ¥±àÂëÆ÷µÄAÏàÊä³ö·¢ÉúÑØÌø±äÊ±µ÷ÓÃ£¬¼´ÉÏÏÂÑØÖĞ¶ÏÊ±
  */
 void knob_detect(void)
 {
@@ -87,7 +87,7 @@ void knob_detect(void)
     {
         knob_val++;
     }
-    else // å³if ((knob_A == 0 && knob_B == 0) || (knob_A == 1 && knob_B == 1))
+    else // ¼´if ((knob_A == 0 && knob_B == 0) || (knob_A == 1 && knob_B == 1))
     {
         knob_val--;
     }
