@@ -47,6 +47,12 @@
 #define TFT_UARTX       UART2  // PTD2,PTD3
 
 
+/*
+ * Ê±¼äÄ£¿é
+ */
+#define DS1302_CE_PINX      PTB2
+#define DS1302_CLK_PINX     PTB1
+#define DS1302_IO_PINX      PTB0
 
 
 #endif // CONFIG_H

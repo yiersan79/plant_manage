@@ -7,16 +7,25 @@
 #include "include/key.h"
 #include "include/knob.h"
 #include "include/tft.h"
+#include "include/config.h"
+#include "include/time.h"
 
 
 void main(void)
 {
     int32_t log = 0, knob_v;
+    time_info time = {
+        2016, 4, 1, 18, 14, 9, 0
+    };
     
     pm_init();
 
     st_init(0, COMPARE, 10);
     st_init(1, COMPARE, 1);
+
+    
+    st_init(2, COMPARE, 3);
+    ds1302_set_time(time);
 
     knob_enable();
 
@@ -30,6 +39,15 @@ void main(void)
                 printf("knob = %d\n", knob_v);
                 log = knob_v;
             }
+        }
+        if (st_tcf(2) == 1)
+        {
+            enter_critical();
+            ds1302_read_time(&time);
+            exit_critical();
+            printf("%d 年 %d 月 %d 星期 %d 日 %d 时 %d 分 %d 秒\n", 
+                    time.year,time.month, time.week, time.day, 
+                    time.hour, time.minute, time.sec);
         }
         
         

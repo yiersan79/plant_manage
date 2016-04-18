@@ -7,6 +7,8 @@
 #include "include/knob.h"
 #include "include/debug.h"
 #include "include/tft.h"
+#include "include/config.h"
+#include "include/time.h"
 
 
 /*
@@ -19,5 +21,6 @@ void pm_init(void)
     knob_init();
     st_base_init();
     tft_init();
+    ds1302_init();
     return;
 }
