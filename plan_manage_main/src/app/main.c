@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "common.h"
+
 #include "include/pm_init.h"
 #include "include/simulat_timer.h"
 #include "include/key.h"
@@ -20,11 +22,13 @@ void main(void)
     
     pm_init();
 
-    st_init(0, COMPARE, 10);
+    st_init(0, COMPARE, 10);    // 作为按键扫描函数的定时使用，在simulat_timer.c的底层中使用
     st_init(1, COMPARE, 1);
 
-    
-    st_init(2, COMPARE, 3);
+    st_init(2, COMPARE, 500);
+
+    st_init(3, COMPARE, 500);
+
     ds1302_set_time(time);
 
     knob_enable();
@@ -50,6 +54,19 @@ void main(void)
                     time.hour, time.minute, time.sec);
         }
         
+        if (st_tcf(3) == 1)
+        {
+            enter_critical();
+            ds1302_read_time(&time);
+            exit_critical();
+            *get_value_of_kvp("st_y", 0) = time.year;
+            *get_value_of_kvp("st_mo", 0) = time.month;
+            *get_value_of_kvp("st_d", 0) = time.day;
+            *get_value_of_kvp("st_h", 0) = time.hour;
+            *get_value_of_kvp("st_mi", 0) = time.minute;
+            *get_value_of_kvp("st_s", 0) = time.sec;
+            tft_page_refresh();
+        }
         
         switch (get_key_mean(UP_KEY))
         {

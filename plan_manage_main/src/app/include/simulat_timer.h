@@ -10,13 +10,13 @@
 /*
  * 模拟定时器的数量
  */
-#define SIMULAT_TIMER_NUM   3
+#define SIMULAT_TIMER_NUM   5
 
 
 
 typedef struct st_register_
 {
-    uint8_t count;      // 定时器计数
+    uint32_t count;      // 定时器计数
     uint32_t cmr;       // 比较寄存器
     struct
     {

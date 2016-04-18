@@ -29,8 +29,9 @@ void tft_ok(void);
 
 void tft_ret(void);
 
+void tft_page_refresh(void);
 
-int16_t get_value_of_kvp(char *name);
+int16_t *get_value_of_kvp(char *name, uint8_t objn);
 
 input_limit tft_input_limit(char *name);
 

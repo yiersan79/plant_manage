@@ -54,20 +54,21 @@ typedef enum tft_colour_
 static tft_state tft_stt = { 0, 0, 0, 0 };
 
 static uint8_t original_lyt[] = { 0, 1 };
-static uint8_t menu_lyt[] = { 0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+static uint8_t menu_lyt[] = { 0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 static uint8_t obj_set_lyt[] = { 0, 4, 7, 11, 13};
 
 
+kv_pair kvp_original[] = { {"ori_0", 0, R_NUM} };
 kv_pair kvp_menu[] = {
-    { "st_y", 2016, RW_NUM }, { "st_mo", 4, RW_NUM }, { "st_d", 14, RW_NUM }, { "st_h", 0, RW_NUM }, { "st_mi", 0, RW_NUM },
+    { "st_y", 2016, RW_NUM }, { "st_mo", 4, RW_NUM }, { "st_d", 14, RW_NUM }, { "st_h", 0, RW_NUM }, { "st_mi", 0, RW_NUM }, { "st_s", 0, RW_NUM },
     { "obj0", 0, SW_PAGE },
-    { "obj1", 0, SW_PAGE },
-    { "obj2", 0, SW_PAGE },
-    { "obj3", 0, SW_PAGE },
-    { "obj4", 0, SW_PAGE },
-    { "obj5", 0, SW_PAGE },
-    { "obj6", 0, SW_PAGE },
-    { "obj7", 0, SW_PAGE }, 
+    { "obj1", 1, SW_PAGE },
+    { "obj2", 2, SW_PAGE },
+    { "obj3", 3, SW_PAGE },
+    { "obj4", 4, SW_PAGE },
+    { "obj5", 5, SW_PAGE },
+    { "obj6", 6, SW_PAGE },
+    { "obj7", 7, SW_PAGE }, 
     { "note", 0, RW_NUM }
 };
 
@@ -512,6 +513,7 @@ void tft_ret(void)
         tft_stt.ln = 0;
         tft_stt.etn = 0;
         tft_send_cmd("page original");
+        tft_page_refresh();
         tft_set_color(tft_stt.etn, TFT_PURPLE);
         break;
     case OBJ_SET_PG:
@@ -519,7 +521,8 @@ void tft_ret(void)
         tft_stt.ln = 0;
         tft_stt.etn = 0;
         tft_send_cmd("page menu");
-        refrush_menu();
+        tft_page_refresh();
+        // refrush_menu();
         tft_set_color(tft_stt.etn, TFT_PURPLE);
         break;
     default:
@@ -573,6 +576,14 @@ void tft_input(void)
             }
             knob_disable();
             tft_set_color(tft_stt.etn, TFT_PURPLE);
+            time_info time;
+            time.year = *get_value_of_kvp("st_y", 0);
+            time.month = *get_value_of_kvp("st_mo", 0);
+            time.day = *get_value_of_kvp("st_d", 0);
+            time.hour = *get_value_of_kvp("st_h", 0);
+            time.minute = *get_value_of_kvp("st_mi", 0);
+            time.sec= *get_value_of_kvp("st_s", 0);
+            ds1302_set_time(time);
             clear_key_m();
             break;
         case RW_PIC:
@@ -681,6 +692,7 @@ void tft_ok(void)
             tft_stt.ln = 0;
             tft_stt.etn = 0;
             tft_send_cmd("page menu");
+            tft_page_refresh();
             tft_set_color(tft_stt.etn, TFT_PURPLE);
             break;
         default:
@@ -704,8 +716,8 @@ void tft_ok(void)
             tft_stt.ln = 0;
             tft_stt.etn = 0;
             tft_send_cmd("page obj_set");
+            tft_page_refresh();
             tft_set_color(tft_stt.etn, TFT_PURPLE);
-            //refrush_obj();
             break;
         default:
             break;
@@ -734,26 +746,106 @@ void tft_ok(void)
     return;
 }
 
+void tft_page_refresh(void)
+{
+    switch (tft_stt.pgn)
+    {
+    case ORIGINAL_PG:
+        for (uint8_t etn = 0; etn < sizeof(kvp_original) / sizeof(kv_pair); etn++)
+        {
+            switch (SW_PAGE)
+            {
+            case R_NUM:
+                break;
+            case RW_NUM:
+                break;
+            case RW_PIC:
+                break;
+            case SW_PAGE:
+                break;
+            default:
+                break;
+            }
+        }
+        break;
+    case MENU_PG:
+        for (int etn = 0; etn < sizeof(kvp_menu) / sizeof(kv_pair); etn++)
+        {
+            switch (kvp_menu[etn].attr)
+            {
+            case R_NUM:
+                break;
+            case RW_NUM:
+                sprintf(tft_cmd_str, "%s.val=%d", kvp_menu[etn].key,
+                        kvp_menu[etn].value);
+                tft_send_cmd(tft_cmd_str);
+                sprintf(tft_cmd_str, "ref %s", kvp_menu[etn].key);
+                tft_send_cmd(tft_cmd_str);
+                break;
+            case RW_PIC:
+                sprintf(tft_cmd_str, "vis %s,%d", kvp_menu[etn].key,
+                        kvp_menu[etn].value);
+                tft_send_cmd(tft_cmd_str);
+                break;
+            case SW_PAGE:
+                break;
+            default:
+                break;
+            }
+        }
+        break;
+    case OBJ_SET_PG:
+        for (int etn = 0; etn < sizeof(kvp_obj_set[0]) / sizeof(kv_pair); etn++)
+        {
+            switch (kvp_obj_set[tft_stt.objn][etn].attr)
+            {
+            case R_NUM:
+                break;
+            case RW_NUM:
+                sprintf(tft_cmd_str, "%s.val=%d", kvp_obj_set[tft_stt.objn][etn].key,
+                        kvp_obj_set[tft_stt.objn][etn].value);
+                tft_send_cmd(tft_cmd_str);
+                sprintf(tft_cmd_str, "ref %s", kvp_obj_set[tft_stt.objn][etn].key);
+                tft_send_cmd(tft_cmd_str);
+                break;
+            case RW_PIC:
+                sprintf(tft_cmd_str, "vis %s,%d", 
+                        kvp_obj_set[tft_stt.objn][etn].key,
+                        kvp_obj_set[tft_stt.objn][etn].value);
+                tft_send_cmd(tft_cmd_str);
+                break;
+            case SW_PAGE:
+                break;
+            default:
+                break;
+            }
+        }
+        break;
+    default:
+        break;
+    }
+    return;
+}
 
 
 
-int16_t get_value_of_kvp(char *name)
+int16_t *get_value_of_kvp(char *name, uint8_t objn)
 {
     for (int i = 0; i < sizeof(kvp_menu) / sizeof(kv_pair); i++)
     {
         if (strcmp(name, kvp_menu[i].key) == 0)
         {
-            return kvp_menu[i].value;
+            return &kvp_menu[i].value;
         }
     }
-    for (int i = 0; i < sizeof(kvp_obj_set[0]) / sizeof(kv_pair); i++)
+    for (int i = 0; i < sizeof(kvp_obj_set[objn]) / sizeof(kv_pair); i++)
     {
-        if (strcmp(name, kvp_obj_set[0][i].key) == 0);
+        if (strcmp(name, kvp_obj_set[objn][i].key) == 0);
         {
-            return kvp_obj_set[0][i].value;
+            return &kvp_obj_set[objn][i].value;
         }
     }
-    return ~0;
+    return 0;
 }
 
 input_limit tft_input_limit(char *name)
@@ -761,7 +853,7 @@ input_limit tft_input_limit(char *name)
     input_limit in_lmt;
     if (strcmp(name, "st_y") == 0)
     {
-        in_lmt.min = 1970;
+        in_lmt.min = 2000;
         in_lmt.max = 2100;
     }
     else if (strcmp(name, "st_mo") == 0)
@@ -772,7 +864,7 @@ input_limit tft_input_limit(char *name)
     else if (strcmp(name, "st_d") == 0)
     {
         in_lmt.min = 1;
-        in_lmt.max = get_month_days(get_value_of_kvp("st_y"), get_value_of_kvp("st_mo"));
+        in_lmt.max = get_month_days(*get_value_of_kvp("st_y", 0), *get_value_of_kvp("st_mo", 0));
     }
     else if (strcmp(name, "st_h") == 0)
     {
@@ -784,9 +876,14 @@ input_limit tft_input_limit(char *name)
         in_lmt.min = 0;
         in_lmt.max = 59;
     }
+    else if (strcmp(name, "st_s") == 0)
+    {
+        in_lmt.min = 0;
+        in_lmt.max = 59;
+    }
     else if (strcmp(name, "bg_y") == 0)
     {
-        in_lmt.min = 1970;
+        in_lmt.min = 2000;
         in_lmt.max = 2100;
     }
     else if (strcmp(name, "bg_mo") == 0)
@@ -797,7 +894,7 @@ input_limit tft_input_limit(char *name)
     else if (strcmp(name, "bg_d") == 0)
     {
         in_lmt.min = 1;
-        in_lmt.max = get_month_days(get_value_of_kvp("bg_y"), get_value_of_kvp("bg_mo"));
+        in_lmt.max = get_month_days(*get_value_of_kvp("bg_y", 0), *get_value_of_kvp("bg_mo", 0));
     }
     else if (strcmp(name, "bg_h") == 0)
     {
