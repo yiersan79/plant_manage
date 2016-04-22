@@ -17,11 +17,11 @@
         <debug>1</debug>
         <option>
           <name>GenRtcDebugHeap</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GenRtcEnableBoundsChecking</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GenRtcCheckPtrsNonInstrMem</name>
@@ -207,6 +207,9 @@
           <name>$PROJ_DIR$\..\src\app\include\plan_handle.h</name>
         </file>
         <file>
+          <name>$PROJ_DIR$\..\src\app\include\pm_time.h</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$\..\src\app\include\setup.h</name>
         </file>
         <file>
@@ -214,9 +217,6 @@
         </file>
         <file>
           <name>$PROJ_DIR$\..\src\app\include\tft.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\src\app\include\time.h</name>
         </file>
       </group>
       <file>
@@ -244,6 +244,9 @@
         <name>$PROJ_DIR$\..\src\app\main.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\src\app\NormalDemo_Flash.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\src\app\output.c</name>
       </file>
       <file>
@@ -253,13 +256,13 @@
         <name>$PROJ_DIR$\..\src\app\pm_init.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\src\app\pm_time.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\src\app\simulat_timer.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\tft.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\src\app\time.c</name>
       </file>
     </group>
     <group>
@@ -312,6 +315,105 @@
     </group>
     <group>
       <name>drivers</name>
+      <group>
+        <name>FTFx</name>
+        <group>
+          <name>source</name>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\CopyToRam.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\DEFlashPartition.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\DFlashGetProtection.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\DFlashSetProtection.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\EEEWrite.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\EERAMGetProtection.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\EERAMSetProtection.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashCheckSum.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashCommandSequence.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashEraseAllBlock.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashEraseBlock.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashEraseResume.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashEraseSector.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashEraseSuspend.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashGetSecurityState.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashInit.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashProgram.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashProgramCheck.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashProgramOnce.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashProgramSection.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashReadOnce.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashReadResource.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashSecurityBypass.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashVerifyAllBlock.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashVerifyBlock.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\FlashVerifySection.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\PFlashGetProtection.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\PFlashSetProtection.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\PFlashSwap.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\PFlashSwapCtl.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\src\drivers\FTFx\source\SetEEEEnable.c</name>
+          </file>
+        </group>
+      </group>
       <file>
         <name>$PROJ_DIR$\..\src\drivers\adc.c</name>
       </file>

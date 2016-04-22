@@ -6,6 +6,7 @@
 #ifndef TFT_H
 #define TFT_H
 
+enum { PLAN_DATA_NUM = 19 };
 
 typedef struct input_limit_
 {
@@ -35,7 +36,9 @@ int16_t *get_value_of_kvp(char *name, uint8_t objn);
 
 input_limit tft_input_limit(char *name);
 
+//const kv_pair *get_plan_data(uint8_t objn)[][PLAN_DATA_NUM];
 
+void tft_to_plan_input(uint8_t objn);
 
 
 

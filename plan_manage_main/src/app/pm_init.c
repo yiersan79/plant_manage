@@ -8,7 +8,8 @@
 #include "include/debug.h"
 #include "include/tft.h"
 #include "include/config.h"
-#include "include/time.h"
+#include "include/pm_time.h"
+#include "include/plan_handle.h"
 
 
 /*
@@ -22,5 +23,6 @@ void pm_init(void)
     st_base_init();
     tft_init();
     ds1302_init();
+    plan_handle_init();
     return;
 }

@@ -16,10 +16,14 @@
 
 
 /*
- * 调试模块
+ * 8266
  */
-#define DEBUG_UARTX		UART1
+#define WIFI_UARTX      UART0   // PTA1,PTA2
 
+/*
+ * 调试模块,或云台
+ */
+#define DEBUG_UARTX		UART1   // PTC3,PTC4
 
 
 /*
@@ -34,10 +38,10 @@
 #define MR_KEY_PINX     PTE30
 #define MB_KEY_PINX     PTA16
 #define MUVB_KEY_PINX   PTD6
-
+// knob用必须是PTA或PTD端口的
 #define KNOB_A_PINX     PTD6
 #define KNOB_B_PINX     PTD7
-#define KNOB_KEY_PINX   PTD4    // PTD5
+#define KNOB_KEY_PINX   PTD4
 
 
 
@@ -54,5 +58,17 @@
 #define DS1302_CLK_PINX     PTB1
 #define DS1302_IO_PINX      PTB0
 
+/*
+ * 控制执行模块
+ *
+ */
+#define LGRED_PINX      PTC12
+#define LGBLUE_PINX     PTC13
+#define LGUVB_PINX      PTC15
+#define WATER_PINX      PTC16
+
+/*
+ * led控制，多选几个任意端口
+ */
 
 #endif // CONFIG_H

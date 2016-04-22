@@ -14,7 +14,30 @@
 #include "include/knob.h"
 #include "include/key.h"
 #include "include/config.h"
-#include "include/time.h"
+#include "include/pm_time.h"
+#include "include/plan_handle.h"
+
+typedef struct plan_input_
+{
+    calendar_info lgbg_t;
+    calendar_info lged_t;
+    calendar_info lgpd_t;
+
+    calendar_info wtbg_t;
+    calendar_info wted_t;
+    calendar_info wtpd_t;
+
+    uint8_t x_orient;
+    uint8_t y_orient;
+    uint8_t lg_r : 1;
+    uint8_t lg_b : 1;
+    uint8_t lg_uvb : 1;
+    uint8_t water : 1;
+    uint8_t sw : 1;
+} plan_input;
+
+
+extern plan_input plan_in[PLAN_DATA_NUM];
 
 
 typedef struct kv_pair_
@@ -58,8 +81,8 @@ static uint8_t menu_lyt[] = { 0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 static uint8_t obj_set_lyt[] = { 0, 4, 7, 11, 13};
 
 
-kv_pair kvp_original[] = { {"ori_0", 0, R_NUM} };
-kv_pair kvp_menu[] = {
+static kv_pair kvp_original[] = { {"ori_0", 0, R_NUM} };
+static kv_pair kvp_menu[] = {
     { "st_y", 2016, RW_NUM }, { "st_mo", 4, RW_NUM }, { "st_d", 14, RW_NUM }, { "st_h", 0, RW_NUM }, { "st_mi", 0, RW_NUM }, { "st_s", 0, RW_NUM },
     { "obj0", 0, SW_PAGE },
     { "obj1", 1, SW_PAGE },
@@ -72,7 +95,7 @@ kv_pair kvp_menu[] = {
     { "note", 0, RW_NUM }
 };
 
-kv_pair kvp_obj_set[][19] = 
+static kv_pair kvp_obj_set[][PLAN_DATA_NUM] = 
 {
     {
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
@@ -134,6 +157,14 @@ kv_pair kvp_obj_set[][19] =
 
 static char tft_cmd_str[20];
 
+static void tft_send_cmd(const char *cmd);
+static void tft_set_color(uint8_t etn, tft_colour tft_col);
+static void tft_input(void);
+
+
+
+
+
 /*
  *
  */ 
@@ -147,7 +178,7 @@ void tft_init(void)
 /*
  *
  */
-void tft_send_cmd(const char *cmd)
+static void tft_send_cmd(const char *cmd)
 {
     uart_sendStr(TFT_UARTX, (const uint8_t *)cmd);
 
@@ -156,7 +187,7 @@ void tft_send_cmd(const char *cmd)
     uart_putchar(TFT_UARTX, 0xff);
 }
 
-void tft_set_color(uint8_t etn, tft_colour tft_col)
+static void tft_set_color(uint8_t etn, tft_colour tft_col)
 {
     switch (tft_stt.pgn)
     {
@@ -532,7 +563,7 @@ void tft_ret(void)
 }
 
 
-void tft_input(void)
+static void tft_input(void)
 {
     input_limit in_lmt;
     int16_t in_v, bg_v;
@@ -576,14 +607,14 @@ void tft_input(void)
             }
             knob_disable();
             tft_set_color(tft_stt.etn, TFT_PURPLE);
-            time_info time;
-            time.year = *get_value_of_kvp("st_y", 0);
-            time.month = *get_value_of_kvp("st_mo", 0);
-            time.day = *get_value_of_kvp("st_d", 0);
-            time.hour = *get_value_of_kvp("st_h", 0);
-            time.minute = *get_value_of_kvp("st_mi", 0);
-            time.sec= *get_value_of_kvp("st_s", 0);
-            ds1302_set_time(time);
+            calendar_info cal;
+            cal.year = *get_value_of_kvp("st_y", 0);
+            cal.month = *get_value_of_kvp("st_mo", 0);
+            cal.mday = *get_value_of_kvp("st_d", 0);
+            cal.hour = *get_value_of_kvp("st_h", 0);
+            cal.min = *get_value_of_kvp("st_mi", 0);
+            cal.sec= *get_value_of_kvp("st_s", 0);
+            ds1302_set_time(&cal);
             clear_key_m();
             break;
         case RW_PIC:
@@ -642,6 +673,7 @@ void tft_input(void)
             }
             knob_disable();
             tft_set_color(tft_stt.etn, TFT_PURPLE);
+            //tft_to_plan_input(tft_stt.objn);
             clear_key_m();
             break;
         case RW_PIC:
@@ -659,8 +691,8 @@ void tft_input(void)
                     tft_send_cmd(tft_cmd_str);
                 }
             }
-
             tft_set_color(tft_stt.etn, TFT_PURPLE);
+            tft_to_plan_input(tft_stt.objn);
             clear_key_m();
             break;
         case SW_PAGE:
@@ -928,3 +960,53 @@ input_limit tft_input_limit(char *name)
     }
     return in_lmt;
 }
+
+
+//const kv_pair *get_plan_data(uint8_t objn)[][18]
+//{
+    //return (const kv_pair *[][18])kvp_obj_set;
+//}
+
+uint8_t get_obj_num(void)
+{
+    return sizeof(kvp_obj_set) / sizeof(kvp_obj_set[0]);
+}
+
+
+/*
+ * 将tft显示的数据提取到计划处理的输入数据结构中，这个函数应该在tft输入有改变是被调
+ * 用。
+ */
+void tft_to_plan_input(uint8_t objn)
+{
+    plan_in[objn].lgbg_t.year = *get_value_of_kvp("bg_y", objn);
+    plan_in[objn].lgbg_t.month = *get_value_of_kvp("bg_mo", objn);
+    plan_in[objn].lgbg_t.mday = *get_value_of_kvp("bg_d", objn);
+    plan_in[objn].lgbg_t.hour = *get_value_of_kvp("bg_h", objn);
+    plan_in[objn].lgbg_t.min = *get_value_of_kvp("bg_mi", objn);
+    //plan_in[objn].bg_t.sec = *get_value_kvp("bg_s", objn);
+
+    plan_in[objn].lged_t.year = *get_value_of_kvp("ed_y", objn);
+    plan_in[objn].lged_t.month = *get_value_of_kvp("ed_mo", objn);
+    plan_in[objn].lged_t.mday = *get_value_of_kvp("ed_d", objn);
+    plan_in[objn].lged_t.hour = *get_value_of_kvp("ed_h", objn);
+    plan_in[objn].lged_t.min = *get_value_of_kvp("ed_mi", objn);
+    //plan_in[objn].ed_t.sec = *get_value_of_kvp("ed_s", objn);
+
+    plan_in[objn].lgpd_t.hour = *get_value_of_kvp("pd_h", objn);
+    plan_in[objn].lgpd_t.min = *get_value_of_kvp("pd_mi", objn);
+
+    plan_in[objn].lg_r = *get_value_of_kvp("lg_r", objn);
+    plan_in[objn].lg_b = *get_value_of_kvp("lg_b)", objn);
+    plan_in[objn].lg_uvb = *get_value_of_kvp("lg_uvb", objn);
+    plan_in[objn].water = *get_value_of_kvp("water", objn);
+
+    plan_in[objn].sw = *get_value_of_kvp("obj_sw", objn);
+    return;
+}
+
+
+
+
+
+
