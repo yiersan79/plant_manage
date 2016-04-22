@@ -27,11 +27,6 @@ void main(void)
     st_init(2, COMPARE, 1);
     st_init(3, COMPARE, 500);
 
-    calendar_info sys_cal = {
-        0, 1, 2, 3, 4, 2012, 0, 1
-    };
-    ds1302_set_time(&sys_cal);
-
     knob_enable();
     
     while (1)

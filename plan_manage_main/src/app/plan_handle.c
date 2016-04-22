@@ -24,21 +24,15 @@
 
 typedef struct plan_output_
 {
-    uint8_t is_lgreach;
-    uint8_t is_wtreach;
-    uint8_t lg_cnt;
-    uint8_t wt_cnt;
+    uint8_t is_reach;
+    uint8_t cnt;
 } plan_output;
 
 typedef struct plan_input_
 {
-    calendar_info lgbg_t;
-    calendar_info lged_t;
-    calendar_info lgpd_t;
-
-    calendar_info wtbg_t;
-    calendar_info wted_t;
-    calendar_info wtpd_t;
+    calendar_info bg_t;
+    calendar_info ed_t;
+    calendar_info pd_t;
 
     uint8_t x_orient;
     uint8_t y_orient;
@@ -75,39 +69,23 @@ static void indata_to_outdata(plan_input *ind, plan_output *outd)
     calendar_info st = get_system_time();
     uint32_t sys_sec = calendar_to_sec(&st);
 
-    uint32_t lgpd_sec = calendar_to_sec(&ind->lgpd_t);
-    uint32_t crt_lgbg_sec = calendar_to_sec(&ind->lgbg_t) + lgpd_sec * outd->lg_cnt;
-    uint32_t crt_lged_sec = calendar_to_sec(&ind->lged_t) + lgpd_sec * outd->lg_cnt;
+    uint32_t pd_sec = calendar_to_sec(&ind->pd_t);
+    uint32_t crt_bg_sec = calendar_to_sec(&ind->bg_t) + pd_sec * outd->cnt;
+    uint32_t crt_ed_sec = calendar_to_sec(&ind->ed_t) + pd_sec * outd->cnt;
 
-    uint32_t wtpd_sec = calendar_to_sec(&ind->wtpd_t);
-    uint32_t crt_wtbg_sec = calendar_to_sec(&ind->wtbg_t) + wtpd_sec * outd->wt_cnt;
-    uint32_t crt_wted_sec = calendar_to_sec(&ind->wted_t) + wtpd_sec * outd->wt_cnt;
-
-    if (crt_lgbg_sec < sys_sec && crt_lged_sec > sys_sec)
+    if (crt_bg_sec < sys_sec && crt_ed_sec > sys_sec)
     {
-        outd->is_lgreach = 1;
+        outd->is_reach = 1;
     }
     else
     {
-        if (outd->is_lgreach == 1)
+        if (outd->is_reach == 1)
         {
-            outd->lg_cnt++;
+            outd->cnt++;
         }
-        outd->is_lgreach = 0;
+        outd->is_reach = 0;
     }
 
-    if (crt_wtbg_sec < sys_sec && crt_wted_sec > sys_sec)
-    {
-        outd->is_wtreach = 1;
-    }
-    else
-    {
-        if (outd->is_wtreach== 1)
-        {
-            outd->wt_cnt++;
-        }
-        outd->is_wtreach = 0;
-    }
     return;
 }
 
@@ -141,7 +119,7 @@ void plan_handle(void)
         indata_to_outdata(&plan_in[i], &plan_out[i]);
         if (plan_in[i].sw == 1)
         {
-            if (plan_out[i].is_lgreach == 1 || plan_out[i].is_wtreach == 1)
+            if (plan_out[i].is_reach == 1)
             {
                 activity = i;
                 break;

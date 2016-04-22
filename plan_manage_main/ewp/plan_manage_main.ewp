@@ -1950,9 +1950,6 @@
         <name>$PROJ_DIR$\..\src\app\display.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\src\app\flash.c</name>
-      </file>
-      <file>
         <name>$PROJ_DIR$\..\src\app\input.c</name>
       </file>
       <file>
@@ -1978,6 +1975,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\plan_handle.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\src\app\pm_flash.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\pm_init.c</name>

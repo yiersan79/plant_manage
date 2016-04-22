@@ -201,6 +201,11 @@ void ds1302_init(void)
     gpio_init(DS1302_CLK_PINX, 1, 0);
     gpio_Interrupt_init(DS1302_IO_PINX, GPI_UP_PF, GPI_DISAB);
     ds1302_single_write(7, 0x00);
+    if ((ds1302_single_read(0) & 0x80) == 1)
+    {
+        calendar_info sys_cal = { 0, 1, 2, 3, 4, 2012, 0, 1 };
+        ds1302_set_time(&sys_cal);
+    }
     return;
 }
 

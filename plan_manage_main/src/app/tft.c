@@ -19,13 +19,9 @@
 
 typedef struct plan_input_
 {
-    calendar_info lgbg_t;
-    calendar_info lged_t;
-    calendar_info lgpd_t;
-
-    calendar_info wtbg_t;
-    calendar_info wted_t;
-    calendar_info wtpd_t;
+    calendar_info bg_t;
+    calendar_info ed_t;
+    calendar_info pd_t;
 
     uint8_t x_orient;
     uint8_t y_orient;
@@ -62,7 +58,7 @@ typedef enum page_name_
 
 typedef enum entry_attr_
 {
-    R_NUM = 0, RW_NUM, RW_PIC, SW_PAGE
+    R_NUM = 0, RW_NUM, RW_PIC, SW_PAGE, R_TXT
 } entry_attr;
 
 typedef enum tft_colour_
@@ -78,7 +74,7 @@ static tft_state tft_stt = { 0, 0, 0, 0 };
 
 static uint8_t original_lyt[] = { 0, 1 };
 static uint8_t menu_lyt[] = { 0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-static uint8_t obj_set_lyt[] = { 0, 4, 7, 11, 13};
+static uint8_t obj_set_lyt[] = { 0, 2, 5, 9, 13, 16, 18, 19};
 
 
 static kv_pair kvp_original[] = { {"ori_0", 0, R_NUM} };
@@ -92,66 +88,82 @@ static kv_pair kvp_menu[] = {
     { "obj5", 5, SW_PAGE },
     { "obj6", 6, SW_PAGE },
     { "obj7", 7, SW_PAGE }, 
-    { "note", 0, RW_NUM }
+    { "note", 0, R_TXT }
 };
 
 static kv_pair kvp_obj_set[][PLAN_DATA_NUM] = 
 {
     {
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
-        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, 
-        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM },
-        { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM },
-        { "lg_pd", 3, RW_NUM }, { "lg_cnt", 0, RW_NUM },
+        { "ob", 1, R_NUM}, { "sw", 1, RW_PIC },// 0~1
+        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
+        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
+        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "cnt", 0, R_NUM } //18
     },  // 0
     {
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
-        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM },
-        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM },
-        { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM },
-        { "lg_pd", 3, RW_NUM }, { "lg_cnt", 0, RW_NUM },
+        { "ob", 2, R_NUM}, { "sw", 1, RW_PIC },// 0~1
+        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
+        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
+        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "cnt", 0, R_NUM } //18
     }, // 1
     {
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
-        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM },
-        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM },
-        { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM },
-        { "lg_pd", 3, RW_NUM }, { "lg_cnt", 0, RW_NUM },
+        { "ob", 3, R_NUM}, { "sw", 1, RW_PIC },// 0~1
+        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
+        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
+        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "cnt", 0, R_NUM } //18
     }, // 2
     {
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
-        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, { "bg_h", 14, RW_NUM }, 
-        { "bg_mi", 0, RW_NUM },
-        { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM },
-        { "lg_pd", 3, RW_NUM }, { "lg_cnt", 0, RW_NUM },
+        { "ob", 4, R_NUM}, { "sw", 1, RW_PIC },// 0~1
+        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
+        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
+        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "cnt", 0, R_NUM } //18
     }, // 3
     {
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
-        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, { "bg_h", 14, RW_NUM },
-        { "bg_mi", 0, RW_NUM },
-        { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM },
-        { "lg_pd", 3, RW_NUM }, { "lg_cnt", 0, RW_NUM },
+        { "ob", 5, R_NUM}, { "sw", 1, RW_PIC },// 0~1
+        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
+        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
+        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "cnt", 0, R_NUM } //18
     }, // 4
     {
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
-        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, { "bg_h", 14, RW_NUM },
-        { "bg_mi", 0, RW_NUM },
-        { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM },
-        { "lg_pd", 3, RW_NUM }, { "lg_cnt", 0, RW_NUM },
+        { "ob", 6, R_NUM}, { "sw", 1, RW_PIC },// 0~1
+        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
+        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
+        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "cnt", 0, R_NUM } //18
     }, // 5
     {
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
-        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, { "bg_h", 14, RW_NUM },
-        { "bg_mi", 0, RW_NUM },
-        { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM },
-        { "lg_pd", 3, RW_NUM }, { "lg_cnt", 0, RW_NUM },
+        { "ob", 7, R_NUM}, { "sw", 1, RW_PIC },// 0~1
+        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
+        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
+        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "cnt", 0, R_NUM } //18
     }, // 6
     {
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC },
-        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, { "bg_h", 14, RW_NUM },
-        { "bg_mi", 0, RW_NUM },
-        { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM },
-        { "lg_pd", 3, RW_NUM }, { "lg_cnt", 0, RW_NUM },
+        { "ob", 8, R_NUM}, { "sw", 1, RW_PIC },// 0~1
+        { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
+        { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
+        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "cnt", 0, R_NUM } //18
     }, // 7
 };
 
@@ -160,7 +172,7 @@ static char tft_cmd_str[20];
 static void tft_send_cmd(const char *cmd);
 static void tft_set_color(uint8_t etn, tft_colour tft_col);
 static void tft_input(void);
-
+static void sw_to_obj(void);
 
 
 
@@ -553,6 +565,7 @@ void tft_ret(void)
         tft_stt.etn = 0;
         tft_send_cmd("page menu");
         tft_page_refresh();
+        sw_to_obj();
         // refrush_menu();
         tft_set_color(tft_stt.etn, TFT_PURPLE);
         break;
@@ -725,6 +738,7 @@ void tft_ok(void)
             tft_stt.etn = 0;
             tft_send_cmd("page menu");
             tft_page_refresh();
+            sw_to_obj();
             tft_set_color(tft_stt.etn, TFT_PURPLE);
             break;
         default:
@@ -806,7 +820,6 @@ void tft_page_refresh(void)
             switch (kvp_menu[etn].attr)
             {
             case R_NUM:
-                break;
             case RW_NUM:
                 sprintf(tft_cmd_str, "%s.val=%d", kvp_menu[etn].key,
                         kvp_menu[etn].value);
@@ -832,7 +845,6 @@ void tft_page_refresh(void)
             switch (kvp_obj_set[tft_stt.objn][etn].attr)
             {
             case R_NUM:
-                break;
             case RW_NUM:
                 sprintf(tft_cmd_str, "%s.val=%d", kvp_obj_set[tft_stt.objn][etn].key,
                         kvp_obj_set[tft_stt.objn][etn].value);
@@ -859,6 +871,18 @@ void tft_page_refresh(void)
     return;
 }
 
+static void sw_to_obj(void)
+{
+    for(uint8_t i = 0; i < 8; i++)
+    {
+        sprintf(tft_cmd_str, "vis obj%d,%d", i,
+                        *get_value_of_kvp("sw", i));
+        tft_send_cmd(tft_cmd_str);
+    }
+    return;
+}
+
+
 
 
 int16_t *get_value_of_kvp(char *name, uint8_t objn)
@@ -872,7 +896,7 @@ int16_t *get_value_of_kvp(char *name, uint8_t objn)
     }
     for (int i = 0; i < sizeof(kvp_obj_set[objn]) / sizeof(kv_pair); i++)
     {
-        if (strcmp(name, kvp_obj_set[objn][i].key) == 0);
+        if (strcmp(name, kvp_obj_set[objn][i].key) == 0)
         {
             return &kvp_obj_set[objn][i].value;
         }
@@ -938,11 +962,6 @@ input_limit tft_input_limit(char *name)
         in_lmt.min = 0;
         in_lmt.max = 59;
     }
-    else if (strcmp(name, "bg_mi") == 0)
-    {
-        in_lmt.min = 0;
-        in_lmt.max = 59;
-    }
     else if (strcmp(name, "ed_h") == 0)
     {
         in_lmt.min = 0;
@@ -952,6 +971,31 @@ input_limit tft_input_limit(char *name)
     {
         in_lmt.min = 0;
         in_lmt.max = 59;
+    }
+    else if (strcmp(name, "pd_d") == 0)
+    {
+        in_lmt.min = 1;
+        in_lmt.max = 30;
+    }
+    else if (strcmp(name, "pd_h") == 0)
+    {
+        in_lmt.min = 0;
+        in_lmt.max = 23;
+    }
+    else if (strcmp(name, "pd_mi") == 0)
+    {
+        in_lmt.min = 0;
+        in_lmt.max = 59;
+    }
+    else if (strcmp(name, "x") == 0)
+    {
+        in_lmt.min = 0;
+        in_lmt.max = 359;
+    }
+    else if (strcmp(name, "y") == 0)
+    {
+        in_lmt.min = 0;
+        in_lmt.max = 359;
     }
     else
     {
@@ -979,29 +1023,30 @@ uint8_t get_obj_num(void)
  */
 void tft_to_plan_input(uint8_t objn)
 {
-    plan_in[objn].lgbg_t.year = *get_value_of_kvp("bg_y", objn);
-    plan_in[objn].lgbg_t.month = *get_value_of_kvp("bg_mo", objn);
-    plan_in[objn].lgbg_t.mday = *get_value_of_kvp("bg_d", objn);
-    plan_in[objn].lgbg_t.hour = *get_value_of_kvp("bg_h", objn);
-    plan_in[objn].lgbg_t.min = *get_value_of_kvp("bg_mi", objn);
+    plan_in[objn].bg_t.year = *get_value_of_kvp("bg_y", objn);
+    plan_in[objn].bg_t.month = *get_value_of_kvp("bg_mo", objn);
+    plan_in[objn].bg_t.mday = *get_value_of_kvp("bg_d", objn);
+    plan_in[objn].bg_t.hour = *get_value_of_kvp("bg_h", objn);
+    plan_in[objn].bg_t.min = *get_value_of_kvp("bg_mi", objn);
     //plan_in[objn].bg_t.sec = *get_value_kvp("bg_s", objn);
 
-    plan_in[objn].lged_t.year = *get_value_of_kvp("ed_y", objn);
-    plan_in[objn].lged_t.month = *get_value_of_kvp("ed_mo", objn);
-    plan_in[objn].lged_t.mday = *get_value_of_kvp("ed_d", objn);
-    plan_in[objn].lged_t.hour = *get_value_of_kvp("ed_h", objn);
-    plan_in[objn].lged_t.min = *get_value_of_kvp("ed_mi", objn);
+    plan_in[objn].ed_t.year = *get_value_of_kvp("ed_y", objn);
+    plan_in[objn].ed_t.month = *get_value_of_kvp("ed_mo", objn);
+    plan_in[objn].ed_t.mday = *get_value_of_kvp("ed_d", objn);
+    plan_in[objn].ed_t.hour = *get_value_of_kvp("ed_h", objn);
+    plan_in[objn].ed_t.min = *get_value_of_kvp("ed_mi", objn);
     //plan_in[objn].ed_t.sec = *get_value_of_kvp("ed_s", objn);
 
-    plan_in[objn].lgpd_t.hour = *get_value_of_kvp("pd_h", objn);
-    plan_in[objn].lgpd_t.min = *get_value_of_kvp("pd_mi", objn);
+    plan_in[objn].pd_t.mday = *get_value_of_kvp("pd_d", objn);
+    plan_in[objn].pd_t.hour = *get_value_of_kvp("pd_h", objn);
+    plan_in[objn].pd_t.min = *get_value_of_kvp("pd_mi", objn);
 
     plan_in[objn].lg_r = *get_value_of_kvp("lg_r", objn);
     plan_in[objn].lg_b = *get_value_of_kvp("lg_b)", objn);
     plan_in[objn].lg_uvb = *get_value_of_kvp("lg_uvb", objn);
     plan_in[objn].water = *get_value_of_kvp("water", objn);
 
-    plan_in[objn].sw = *get_value_of_kvp("obj_sw", objn);
+    plan_in[objn].sw = *get_value_of_kvp("sw", objn);
     return;
 }
 

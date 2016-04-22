@@ -1,4 +1,6 @@
-
+/*
+ * pm_flash.c - flash读写模块
+ */
 
 #include "SSD_FTFx.h"
 
@@ -49,6 +51,7 @@ void pm_flash_init(void)
  * 这个函数的执行过程包括擦除和写入，默认的写入范围为flash的最后一个扇区，大小为
  * 1KB，如果要改变大小，改参数就可以了，注意不要覆盖了code，具体可看map文件。
  * 擦除是一次性擦除全部选择的扇区范围，所以在写入的时候要注意保存先前写入的数据
+ * flash读取函数的起始地址等于flash写入函数的写入起始地址
  */
 void flash_write(uint8_t *saddr, uint16_t nbyte)
 {
@@ -129,6 +132,13 @@ void flash_write(uint8_t *saddr, uint16_t nbyte)
     return;
 }
 
+/*
+ * flash_read() - 读取flash中写入的数据
+ * @daddr: 读取数据要保存的地址
+ * @nbyte: 要读取的字节数
+ *
+ * flash读取函数的起始地址等于flash写入函数的写入起始地址
+ */
 void flash_read(uint8_t *daddr, uint8_t nbyte)
 {
     uint8_t *saddr = (uint8_t *)(flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize
@@ -141,14 +151,9 @@ void flash_read(uint8_t *daddr, uint8_t nbyte)
     return;
 }
 
-/*********************************************************************
-*
-*  Function Name    : ErrorTrap
-*  Description      : Gets called when an error occurs.
-*  Arguments        : uint32_t
-*  Return Value     :
-*
-*********************************************************************/
+/*
+ * ErrorTrap() - flash操作错误处理
+ */
 void ErrorTrap(uint32_t ret)
 {
     while (1)
