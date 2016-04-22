@@ -2,8 +2,9 @@
 
 #include "SSD_FTFx.h"
 
-#include "flash.h"
+#include "pm_flash_cfg.h"
 
+#define USED_SECTOR_NUM     0x01U
 
 
 FLASH_SSD_CONFIG flashSSDConfig =
@@ -21,55 +22,49 @@ FLASH_SSD_CONFIG flashSSDConfig =
 
 #define LAUNCH_CMD_SIZE         0x80U
 
-uint8_t buffer[BUFFER_SIZE_BYTE];
-
-
 pFLASHCOMMANDSEQUENCE g_FlashLaunchCommand = (pFLASHCOMMANDSEQUENCE)0xFFFFFFFF;
 
 uint16_t __ram_func[LAUNCH_CMD_SIZE/2]; /* array to copy __Launch_Command func to RAM */
 
-
-void main(void)
+void pm_flash_init(void)
 {
-    uint32_t ret;          /* Return code from each SSD function */
-    uint32_t dest;         /* Address of the target location */
-    uint32_t size;
-    uint32_t FailAddr;
-    uint16_t number;      /* Number of longword or phrase to be program or verify*/
-    uint32_t sum;
-    uint32_t temp;
-    uint32_t i;
-    
-    
-    g_FlashLaunchCommand = (pFLASHCOMMANDSEQUENCE)RelocateFunction((uint32_t)__ram_func , LAUNCH_CMD_SIZE ,(uint32_t)FlashCommandSequence);     
+    uint32_t ret;
 
-    
-    /**************************************************************************
-    *                               FlashInit()                               *
-    ***************************************************************************/
+    g_FlashLaunchCommand = 
+        (pFLASHCOMMANDSEQUENCE)RelocateFunction((uint32_t)__ram_func ,
+                LAUNCH_CMD_SIZE ,(uint32_t)FlashCommandSequence);
     ret = FlashInit(&flashSSDConfig);
     if (FTFx_OK != ret)
     {
         ErrorTrap(ret);
     }
-    
+    return;
+}
+
+/*
+ * flash_write() - 将数据写入flash
+ * @saddr: 要写入的数据的起始地址
+ * @size: 写入数据的字节数
+ *
+ * 这个函数的执行过程包括擦除和写入，默认的写入范围为flash的最后一个扇区，大小为
+ * 1KB，如果要改变大小，改参数就可以了，注意不要覆盖了code，具体可看map文件。
+ * 擦除是一次性擦除全部选择的扇区范围，所以在写入的时候要注意保存先前写入的数据
+ */
+void flash_write(uint8_t *saddr, uint16_t nbyte)
+{
+    uint32_t ret;
+    uint32_t dest;
+    uint32_t size;
+    uint16_t number;
+    uint32_t temp;
     
     /*
-     * 撤销保护
+     * 擦除扇区
      */
-    //ret = PFlashSetProtection(&flashSSDConfig, 1);
-    if (FTFx_OK != ret)
-    {
-        ErrorTrap(ret);
-    }
-    
-    
-    /**************************************************************************
-    *               FlashEraseSector()  and FlashVerifySection()              *
-    ***************************************************************************/
-    /* Erase several sectors on Pflash*/
-    dest = flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize - 0x3U * FTFx_PSECTOR_SIZE);
-    while ((dest + BYTE2WORD(FTFx_PSECTOR_SIZE)) <= (flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize)))
+    dest = flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize
+            - USED_SECTOR_NUM * FTFx_PSECTOR_SIZE);
+    while ((dest + BYTE2WORD(FTFx_PSECTOR_SIZE)) <= (flashSSDConfig.PFlashBlockBase
+                + BYTE2WORD(flashSSDConfig.PFlashBlockSize)))
     {
         size = FTFx_PSECTOR_SIZE;
         ret = FlashEraseSector(&flashSSDConfig, dest, size, g_FlashLaunchCommand);
@@ -78,9 +73,9 @@ void main(void)
             ErrorTrap(ret);
         }
 
-        /* Verify section for several sector of PFLASH */
+        /* 检验 */
         number = FTFx_PSECTOR_SIZE / PRD1SEC_ALIGN_SIZE;
-        for(i = 0x0U; i < 0x2U; i++)
+        for(uint8_t i = 0x0U; i < 0x2U; i++)
         {
             ret = FlashVerifySection(&flashSSDConfig, dest, number, i, g_FlashLaunchCommand);
             if (FTFx_OK != ret)
@@ -90,57 +85,60 @@ void main(void)
         }
         dest += BYTE2WORD(size);
     }
-    
-    /**************************************************************************
-    *    FlashProgram() FlashCheckSum and  FlashProgramCheck()        *
-    ***************************************************************************/
-    /* Initialize source buffer */
-    for (i = 0x0U; i < BUFFER_SIZE_BYTE; i++)
-    {
-        /* Set source buffer */
-        buffer[i] = 0x77;
-    }
-    
-    /* Program to the end location of PFLASH */
-    size = BUFFER_SIZE_BYTE;
-    dest = flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize - (uint32_t)(0x1U * FTFx_PSECTOR_SIZE));
 
-    while ((dest + BYTE2WORD(size)) <= (flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize)))
+    /*
+     * 写入数据
+     */
+    dest = flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize
+            - (uint32_t)(USED_SECTOR_NUM * FTFx_PSECTOR_SIZE));
+
+    if ((dest + BYTE2WORD(size)) <= (flashSSDConfig.PFlashBlockBase
+                + BYTE2WORD(flashSSDConfig.PFlashBlockSize)))
     {
-        ret = FlashProgram(&flashSSDConfig, dest, size, \
-                                       buffer, g_FlashLaunchCommand);
+        ret = FlashProgram(&flashSSDConfig, dest, nbyte, \
+                                       saddr, g_FlashLaunchCommand);
         if (FTFx_OK != ret)
         {
             ErrorTrap(ret);
         }
         
-        /* Flash CheckSum */
-        sum = temp = 0x0U;
-        for (i = 0x0U; i < size; i++)
+        /* 校验和检验 */
+        uint32_t sum = temp = 0x0U;
+        for (uint8_t i = 0x0U; i < nbyte; i++)
         {
-            temp += buffer[i];
+            temp += saddr[i];
         }
-        ret = FlashCheckSum(&flashSSDConfig, dest, size, &sum);
+        ret = FlashCheckSum(&flashSSDConfig, dest, nbyte, &sum);
         if ((FTFx_OK != ret) || (temp != sum))
         {
             ErrorTrap(ret);
         }
         
-        /* Program Check for normal and user margin levels*/
-        for (i = 0x1U; i < 0x3U; i ++)
+        /* 正确测试 */
+        uint32_t FailAddr;
+        for (uint8_t i = 0x1U; i < 0x3U; i ++)
         {
-            ret = FlashProgramCheck(&flashSSDConfig, dest, size, buffer, \
+            ret = FlashProgramCheck(&flashSSDConfig, dest, nbyte, saddr, \
                                         &FailAddr, i, g_FlashLaunchCommand);
             if (FTFx_OK != ret)
             {
                 ErrorTrap(ret);
             }
         }
-        
-        dest += BYTE2WORD(BUFFER_SIZE_BYTE);
     }
-    
-    while(1);
+    return;
+}
+
+void flash_read(uint8_t *daddr, uint8_t nbyte)
+{
+    uint8_t *saddr = (uint8_t *)(flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize
+            - (uint32_t)(USED_SECTOR_NUM * FTFx_PSECTOR_SIZE)));
+
+    for (uint16_t i = 0; i < nbyte; i++)
+    {
+        daddr[i] = saddr[i];
+    }
+    return;
 }
 
 /*********************************************************************
@@ -155,6 +153,7 @@ void ErrorTrap(uint32_t ret)
 {
     while (1)
     {
-        ;
+        printf("flash操作错误，返回码为 %d\n", ret);
     }
+    return;
 }

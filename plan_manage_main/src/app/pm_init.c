@@ -10,6 +10,7 @@
 #include "include/config.h"
 #include "include/pm_time.h"
 #include "include/plan_handle.h"
+#include "include/pm_flash.h"
 
 
 /*
@@ -24,5 +25,6 @@ void pm_init(void)
     tft_init();
     ds1302_init();
     plan_handle_init();
+    pm_flash_init();
     return;
 }

@@ -1966,9 +1966,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\main.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\NormalDemo_Flash.c</name>

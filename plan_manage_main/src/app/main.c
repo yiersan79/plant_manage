@@ -12,6 +12,8 @@
 #include "include/config.h"
 #include "include/pm_time.h"
 #include "include/plan_handle.h"
+#include "include/pm_flash.h"
+
 
 
 void main(void)
@@ -72,10 +74,11 @@ void main(void)
         if (st_tcf(3) == 1)
         {
             calendar_info st = get_system_time();
+            
             printf("%d 年 %d 月 %d 星期 %d 日 %d 时 %d 分 %d 秒\n", 
                     st.year, st.month, st.wday, st.mday, 
                     st.hour, st.min, st.sec);
-            printf("sec = %d\n", calendar_to_sec(&st));
+            printf("sec = %d\n", calendar_to_sec(&st)); 
         }
         
         /*
