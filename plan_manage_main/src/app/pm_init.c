@@ -18,13 +18,13 @@
  */
 void pm_init(void)
 {
+    pm_flash_init();
     debug_init();
     key_init();
     knob_init();
     st_base_init();
     tft_init();
     ds1302_init();
-    plan_handle_init();
-    pm_flash_init();
+    plan_handle_init();     // 计划处理初始化必须在flash初始化之后
     return;
 }

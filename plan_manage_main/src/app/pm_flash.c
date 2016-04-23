@@ -46,7 +46,7 @@ void pm_flash_init(void)
 /*
  * flash_write() - 将数据写入flash
  * @saddr: 要写入的数据的起始地址
- * @size: 写入数据的字节数
+ * @size: 写入数据的字节数，字节数必须要以4对齐！！！
  *
  * 这个函数的执行过程包括擦除和写入，默认的写入范围为flash的最后一个扇区，大小为
  * 1KB，如果要改变大小，改参数就可以了，注意不要覆盖了code，具体可看map文件。
@@ -107,7 +107,7 @@ void flash_write(uint8_t *saddr, uint16_t nbyte)
         
         /* 校验和检验 */
         uint32_t sum = temp = 0x0U;
-        for (uint8_t i = 0x0U; i < nbyte; i++)
+        for (uint16_t i = 0x0U; i < nbyte; i++)
         {
             temp += saddr[i];
         }

@@ -14,34 +14,13 @@
 #include "include/knob.h"
 #include "include/key.h"
 #include "include/config.h"
-#include "include/pm_time.h"
 #include "include/plan_handle.h"
-
-typedef struct plan_input_
-{
-    calendar_info bg_t;
-    calendar_info ed_t;
-    calendar_info pd_t;
-
-    uint8_t x_orient;
-    uint8_t y_orient;
-    uint8_t lg_r : 1;
-    uint8_t lg_b : 1;
-    uint8_t lg_uvb : 1;
-    uint8_t water : 1;
-    uint8_t sw : 1;
-} plan_input;
+#include "include/tft_plan_internal.h"
+#include "include/pm_flash.h"
 
 
-extern plan_input plan_in[PLAN_DATA_NUM];
 
 
-typedef struct kv_pair_
-{
-    char *key;
-    int16_t value;
-    int8_t attr;
-} kv_pair;
 
 typedef struct tft_state_
 {
@@ -91,7 +70,7 @@ static kv_pair kvp_menu[] = {
     { "note", 0, R_TXT }
 };
 
-static kv_pair kvp_obj_set[][PLAN_DATA_NUM] = 
+kv_pair kvp_obj_set[][PLAN_DATA_NUM] = 
 {
     {
         { "ob", 1, R_NUM}, { "sw", 1, RW_PIC },// 0~1
@@ -536,14 +515,6 @@ void refrush_obj(void)
     return;
 }
 
-void refrush_menu(void)
-{
-    for (int i = 0; i < sizeof(kvp_obj_set[tft_stt.objn]) / sizeof(kv_pair); i++)
-    {
-        
-    }
-    return;
-}
 
 void tft_ret(void)
 {
@@ -565,8 +536,12 @@ void tft_ret(void)
         tft_stt.etn = 0;
         tft_send_cmd("page menu");
         tft_page_refresh();
+        
         sw_to_obj();
-        // refrush_menu();
+        tft_to_plan_input(tft_stt.objn);
+        enter_critical();
+        flash_write((uint8_t *)plan_in, sizeof(plan_in));
+        exit_critical();
         tft_set_color(tft_stt.etn, TFT_PURPLE);
         break;
     default:
@@ -580,6 +555,7 @@ static void tft_input(void)
 {
     input_limit in_lmt;
     int16_t in_v, bg_v;
+
     switch (tft_stt.pgn)
     {
     case ORIGINAL_PG:
@@ -686,7 +662,6 @@ static void tft_input(void)
             }
             knob_disable();
             tft_set_color(tft_stt.etn, TFT_PURPLE);
-            //tft_to_plan_input(tft_stt.objn);
             clear_key_m();
             break;
         case RW_PIC:
@@ -705,7 +680,6 @@ static void tft_input(void)
                 }
             }
             tft_set_color(tft_stt.etn, TFT_PURPLE);
-            tft_to_plan_input(tft_stt.objn);
             clear_key_m();
             break;
         case SW_PAGE:
@@ -1017,38 +991,7 @@ uint8_t get_obj_num(void)
 }
 
 
-/*
- * 将tft显示的数据提取到计划处理的输入数据结构中，这个函数应该在tft输入有改变是被调
- * 用。
- */
-void tft_to_plan_input(uint8_t objn)
-{
-    plan_in[objn].bg_t.year = *get_value_of_kvp("bg_y", objn);
-    plan_in[objn].bg_t.month = *get_value_of_kvp("bg_mo", objn);
-    plan_in[objn].bg_t.mday = *get_value_of_kvp("bg_d", objn);
-    plan_in[objn].bg_t.hour = *get_value_of_kvp("bg_h", objn);
-    plan_in[objn].bg_t.min = *get_value_of_kvp("bg_mi", objn);
-    //plan_in[objn].bg_t.sec = *get_value_kvp("bg_s", objn);
 
-    plan_in[objn].ed_t.year = *get_value_of_kvp("ed_y", objn);
-    plan_in[objn].ed_t.month = *get_value_of_kvp("ed_mo", objn);
-    plan_in[objn].ed_t.mday = *get_value_of_kvp("ed_d", objn);
-    plan_in[objn].ed_t.hour = *get_value_of_kvp("ed_h", objn);
-    plan_in[objn].ed_t.min = *get_value_of_kvp("ed_mi", objn);
-    //plan_in[objn].ed_t.sec = *get_value_of_kvp("ed_s", objn);
-
-    plan_in[objn].pd_t.mday = *get_value_of_kvp("pd_d", objn);
-    plan_in[objn].pd_t.hour = *get_value_of_kvp("pd_h", objn);
-    plan_in[objn].pd_t.min = *get_value_of_kvp("pd_mi", objn);
-
-    plan_in[objn].lg_r = *get_value_of_kvp("lg_r", objn);
-    plan_in[objn].lg_b = *get_value_of_kvp("lg_b)", objn);
-    plan_in[objn].lg_uvb = *get_value_of_kvp("lg_uvb", objn);
-    plan_in[objn].water = *get_value_of_kvp("water", objn);
-
-    plan_in[objn].sw = *get_value_of_kvp("sw", objn);
-    return;
-}
 
 
 

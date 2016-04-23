@@ -19,6 +19,8 @@
 void main(void)
 {
     
+    printf("\n\n\n程序开始执行！！！\n\n\n");
+    
     pm_init();
 
     st_init(0, COMPARE, 10);    // 作为按键扫描函数的定时使用，在simulat_timer.c的底层中使用
@@ -28,6 +30,7 @@ void main(void)
     st_init(3, COMPARE, 500);
 
     knob_enable();
+    
     
     while (1)
     {
