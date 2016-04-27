@@ -2,6 +2,76 @@
  * tft.c - tft 显示屏的接口
  *
  * uart hmi方式
+ * 这个模块的核心是一个状态机框架，如下
+ *    switch (tft_stt.pgn)
+ *    {
+ *    case ORIGINAL_PG:
+ *        switch (kvp_menu[etn].attr)
+ *        {
+ *        case R_NUM:
+ *            break;
+ *        case RW_NUM:
+ *            break;
+ *        case RW_PIC:
+ *            break;
+ *        case SW_PAGE:
+ *            break;
+ *        case R_TXT:
+ *            break;
+ *        default:
+ *            break;
+ *        }
+ *        break;
+ *    case MENU_PG:
+ *        switch (kvp_menu[etn].attr)
+ *        {
+ *        case R_NUM:
+ *            break;
+ *        case RW_NUM:
+ *            break;
+ *        case RW_PIC:
+ *            break;
+ *        case SW_PAGE:
+ *            break;
+ *        case R_TXT:
+ *            break;
+ *        default:
+ *            break;
+ *        }
+ *        break;
+ *    case OBJ_SET_PG:
+ *        switch (kvp_obj_set[tft_stt.objn][etn].attr)
+ *        {
+ *        case R_NUM:
+ *            break;
+ *        case RW_NUM:
+ *            break;
+ *        case RW_PIC:
+ *            break;
+ *        case SW_PAGE:
+ *            break;
+ *        case R_TXT:
+ *            break;
+ *        default:
+ *            break;
+ *        }
+ *        break;
+ *    default:
+ *        break;
+ *    }
+ * 关于显示的所有，最终都会体现在这个框架里，也就是所谓的状态机里，逻辑简单，细节繁琐
+ *
+ * 解释几个关键变量：
+ *      tft_stt - 包含状态机当前的状态信息
+ *      kvp_* - 数组，每一个元素具有一个页面中单个元素的数据信息，它的集合组成整个页
+ *      面的数据信息，它的元素顺序应该符合页面中的实际顺序，也即它的元素顺序表示了页
+ *      面元素的顺序信息
+ *      *_lyt - 数组，配合kvp_*描述一个页面的布局，其每一个元素表示页面中对应行中第一
+ *      个元素在kvp_*数组中的下标
+ *      每一对*_lyt和kvp_*完整的表示了一个页面，也就是数据信息和布局信息
+ *      ( * 号意指通配符；页面是按行分割的)
+ *
+ * 所有如上，所有如下
  */
 
 #include <stdint.h>
@@ -17,6 +87,8 @@
 #include "include/plan_handle.h"
 #include "include/tft_plan_internal.h"
 #include "include/pm_flash.h"
+#include "include/orient.h"
+
 
 
 
@@ -37,7 +109,7 @@ typedef enum page_name_
 
 typedef enum entry_attr_
 {
-    R_NUM = 0, RW_NUM, RW_PIC, SW_PAGE, R_TXT
+    R_NUM = 0, RW_NUM, RW_PIC, SW_PAGE, R_TXT, RW_TXT
 } entry_attr;
 
 typedef enum tft_colour_
@@ -66,82 +138,82 @@ static kv_pair kvp_menu[] = {
     { "obj4", 4, SW_PAGE },
     { "obj5", 5, SW_PAGE },
     { "obj6", 6, SW_PAGE },
-    { "obj7", 7, SW_PAGE }, 
+    { "obj7", 7, SW_PAGE },
     { "note", 0, R_TXT }
 };
 
-kv_pair kvp_obj_set[][PLAN_DATA_NUM] = 
+kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
 {
     {
         { "ob", 1, R_NUM}, { "sw", 1, RW_PIC },// 0~1
         { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     },  // 0
     {
         { "ob", 2, R_NUM}, { "sw", 1, RW_PIC },// 0~1
         { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 1
     {
         { "ob", 3, R_NUM}, { "sw", 1, RW_PIC },// 0~1
         { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 2
     {
         { "ob", 4, R_NUM}, { "sw", 1, RW_PIC },// 0~1
         { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 3
     {
         { "ob", 5, R_NUM}, { "sw", 1, RW_PIC },// 0~1
         { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 4
     {
         { "ob", 6, R_NUM}, { "sw", 1, RW_PIC },// 0~1
         { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 5
     {
         { "ob", 7, R_NUM}, { "sw", 1, RW_PIC },// 0~1
         { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 6
     {
         { "ob", 8, R_NUM}, { "sw", 1, RW_PIC },// 0~1
         { "bg_y", 2016, RW_NUM }, { "bg_mo", 4, RW_NUM }, { "bg_d", 14, RW_NUM }, // 2~4
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
-        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12              
+        { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_NUM }, { "y", 0, RW_NUM }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 7
 };
@@ -158,7 +230,7 @@ static void sw_to_obj(void);
 
 /*
  *
- */ 
+ */
 void tft_init(void)
 {
     uart_init(TFT_UARTX, 9600);
@@ -489,19 +561,19 @@ void refrush_obj(void)
         switch (kvp_obj_set[tft_stt.objn][tft_stt.etn].attr)
         {
         case R_NUM:
-        sprintf(tft_cmd_str,"%s.val=%d", 
+        sprintf(tft_cmd_str,"%s.val=%d",
                 kvp_obj_set[tft_stt.objn][tft_stt.etn].key,
                 kvp_obj_set[tft_stt.objn][tft_stt.etn].value);
         tft_send_cmd(tft_cmd_str);
             break;
         case RW_NUM:
-        sprintf(tft_cmd_str,"%s.val=%d", 
+        sprintf(tft_cmd_str,"%s.val=%d",
                 kvp_obj_set[tft_stt.objn][tft_stt.etn].key,
                 kvp_obj_set[tft_stt.objn][tft_stt.etn].value);
         tft_send_cmd(tft_cmd_str);
             break;
         case RW_PIC:
-        sprintf(tft_cmd_str, "vis %s,%d", 
+        sprintf(tft_cmd_str, "vis %s,%d",
                 kvp_obj_set[tft_stt.objn][tft_stt.etn].key,
                 kvp_obj_set[tft_stt.objn][tft_stt.etn].value);
         tft_send_cmd(tft_cmd_str);
@@ -536,7 +608,7 @@ void tft_ret(void)
         tft_stt.etn = 0;
         tft_send_cmd("page menu");
         tft_page_refresh();
-        
+
         sw_to_obj();
         tft_to_plan_input(tft_stt.objn);
         enter_critical();
@@ -673,12 +745,56 @@ static void tft_input(void)
                 {
                     kvp_obj_set[tft_stt.objn][tft_stt.etn].value =
                         !kvp_obj_set[tft_stt.objn][tft_stt.etn].value;
-                    sprintf(tft_cmd_str, "vis %s,%d", 
+                    sprintf(tft_cmd_str, "vis %s,%d",
                             kvp_obj_set[tft_stt.objn][tft_stt.etn].key,
                             kvp_obj_set[tft_stt.objn][tft_stt.etn].value);
                     tft_send_cmd(tft_cmd_str);
                 }
             }
+            tft_set_color(tft_stt.etn, TFT_PURPLE);
+            clear_key_m();
+            break;
+        case RW_TXT:
+            tft_set_color(tft_stt.etn, TFT_RED);
+            in_lmt = tft_input_limit(kvp_obj_set[tft_stt.objn][tft_stt.etn].key);
+            bg_v = kvp_obj_set[tft_stt.objn][tft_stt.etn].value;
+            knob_enable();
+            uint8_t addr = 0;
+            if (strcmp(kvp_obj_set[tft_stt.objn][tft_stt.etn].key, "x") == 0)
+            {
+                addr = 0;
+            }
+            else
+            {
+                addr = 1;
+            }
+            while (get_key_mean(RET_KEY) == N_KEY)
+            {
+                in_v = bg_v + get_knob_val();
+                if (in_v < in_lmt.min)
+                {
+                    kvp_obj_set[tft_stt.objn][tft_stt.etn].value = in_lmt.min;
+                    bg_v = in_lmt.min;
+                    knob_clear();
+                }
+                else if (in_v > in_lmt.max)
+                {
+                    kvp_obj_set[tft_stt.objn][tft_stt.etn].value = in_lmt.max;
+                    bg_v = in_lmt.max;
+                    knob_clear();
+                }
+                else
+                {
+                    kvp_obj_set[tft_stt.objn][tft_stt.etn].value = in_v;
+                }
+                sprintf(tft_cmd_str, "%s.txt=\"%d\"", kvp_obj_set[tft_stt.objn][tft_stt.etn].key,
+                        kvp_obj_set[tft_stt.objn][tft_stt.etn].value);
+                tft_send_cmd(tft_cmd_str);
+                
+                orient_setspeed(addr, kvp_obj_set[tft_stt.objn][tft_stt.etn].value >= 0 ? ORIENT_RIGHT : ORIENT_LEFT, kvp_obj_set[tft_stt.objn][tft_stt.etn].value);
+            }
+            orient_setmode(addr, MODE_MANUL);
+            knob_disable();
             tft_set_color(tft_stt.etn, TFT_PURPLE);
             clear_key_m();
             break;
@@ -694,7 +810,7 @@ static void tft_input(void)
 }
 
 void tft_ok(void)
-{	
+{
     switch (tft_stt.pgn)
     {
     case ORIGINAL_PG:
@@ -827,7 +943,7 @@ void tft_page_refresh(void)
                 tft_send_cmd(tft_cmd_str);
                 break;
             case RW_PIC:
-                sprintf(tft_cmd_str, "vis %s,%d", 
+                sprintf(tft_cmd_str, "vis %s,%d",
                         kvp_obj_set[tft_stt.objn][etn].key,
                         kvp_obj_set[tft_stt.objn][etn].value);
                 tft_send_cmd(tft_cmd_str);

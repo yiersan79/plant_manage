@@ -223,9 +223,6 @@
         <name>$PROJ_DIR$\..\src\app\debug.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\src\app\display.c</name>
-      </file>
-      <file>
         <name>$PROJ_DIR$\..\src\app\input.c</name>
       </file>
       <file>
@@ -242,6 +239,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\NormalDemo_Flash.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\src\app\orient.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\output.c</name>

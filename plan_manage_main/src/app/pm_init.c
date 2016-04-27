@@ -11,6 +11,7 @@
 #include "include/pm_time.h"
 #include "include/plan_handle.h"
 #include "include/pm_flash.h"
+#include "include/orient.h"
 
 
 /*
@@ -26,5 +27,6 @@ void pm_init(void)
     tft_init();
     ds1302_init();
     plan_handle_init();     // 计划处理初始化必须在flash初始化之后
+    orient_init();
     return;
 }

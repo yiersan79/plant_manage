@@ -1947,9 +1947,6 @@
         <name>$PROJ_DIR$\..\src\app\debug.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\src\app\display.c</name>
-      </file>
-      <file>
         <name>$PROJ_DIR$\..\src\app\input.c</name>
       </file>
       <file>
@@ -1969,6 +1966,9 @@
         <excluded>
           <configuration>Debug</configuration>
         </excluded>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\src\app\orient.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\output.c</name>
