@@ -35,7 +35,7 @@ void orient_init(void);
 
 void orient_setspeed(uint8_t addr, orient ori, uint8_t spd);
 
-void orient_setpreset(uint8_t addr, preset_op op, uint8_t npre);
+void orient_presetop(uint8_t addr, preset_op op, uint8_t npre);
 
 void orient_setmode(uint8_t addr, orient_mode mod);
 

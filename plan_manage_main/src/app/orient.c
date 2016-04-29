@@ -14,6 +14,7 @@
 void orient_init(void)
 {
     uart_init(ORIENT_UARTX, 2400);
+    gpio_init(RE_DE_PINX, 1, 1);
     orient_setmode(0, MODE_MANUL);
     orient_setmode(1, MODE_MANUL);
     return;
@@ -60,13 +61,13 @@ void orient_setspeed(uint8_t addr, orient ori, uint8_t spd)
 
 
 /*
- * orient_setpreset() - 设置预置点
+ * orient_presetop() - 设置预置点
  *
  * @addr: 地址码
  * @op: 对预置点的操作
  * @npre: 预置点编号
  */
-void orient_setpreset(uint8_t addr, preset_op op, uint8_t npre)
+void orient_presetop(uint8_t addr, preset_op op, uint8_t npre)
 {
     uint8_t cmd[7] = { 0xff, addr, 0x00, 0x00, 0x00, npre, 0x00 };
 

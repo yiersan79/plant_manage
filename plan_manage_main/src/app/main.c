@@ -13,23 +13,26 @@
 #include "include/pm_time.h"
 #include "include/plan_handle.h"
 #include "include/pm_flash.h"
+#include "include/orient.h"
 
 
 
 void main(void)
 {
-    
+
     printf("\n\n\n程序开始执行！！！\n\n\n");
-    
+
     pm_init();
 
     st_init(0, COMPARE, 10);    // 作为按键扫描函数的定时使用，在simulat_timer.c的底层中使用
-    st_init(1, COMPARE, 500);
+    st_init(1, COMPARE, 100);
 
     st_init(2, COMPARE, 1);
     st_init(3, COMPARE, 500);
 
     knob_enable();
+
+
     
     
     while (1)
@@ -72,90 +75,38 @@ void main(void)
         if (st_tcf(3) == 1)
         {
             calendar_info st = get_system_time();
-            
-            printf("%d 年 %d 月 %d 星期 %d 日 %d 时 %d 分 %d 秒\n", 
-                    st.year, st.month, st.wday, st.mday, 
+
+            printf("%d 年 %d 月 %d 星期 %d 日 %d 时 %d 分 %d 秒\n",
+                    st.year, st.month, st.wday, st.mday,
                     st.hour, st.min, st.sec);
-            printf("sec = %d\n", calendar_to_sec(&st)); 
+            printf("sec = %d\n", calendar_to_sec(&st));
+            calendar_info test_t;
+            test_t.year = START_YEAR;
+            test_t.month = 1;
+            test_t.mday = 1;
+            test_t.hour = 0;
+            test_t.min = 0;
+            test_t.sec = 0;
+            uint32_t test_sec = calendar_to_sec(&test_t);
+            printf("test_sec = %d\n", test_sec);
+            
+            static uint8_t lg_test;
+            lg_test = !lg_test;
+            gpio_set(LG1_PINX, 0);
+            gpio_set(LG2_PINX, 0);
+            gpio_set(LG3_PINX, 0);
+            
+            if (gpio_get(AMS_KEY_PINX))
+            {
+                printf("计划!!!!!!\n");
+            }
+            else
+            {
+                printf("手动!!!!!!\n");
+            }
         }
-        
-        /*
-         * 按键功能注册部分
-         */
-        switch (get_key_mean(UP_KEY))
-        {
-        case N_KEY:
-            //printf("无键\n");
-            break;
-        case S_KEY:
-            printf("单击\n");
-            tft_left();
-            break;
-        case D_KEY:
-            printf("双击\n");
-            tft_up();
-            break;
-        case L_KEY:
-            printf("长按\n");
-            break;
-        default:
-            break;
-        }
-        switch (get_key_mean(DOWN_KEY))
-        {
-        case N_KEY:
-            //printf("无键\n");
-            break;
-        case S_KEY:
-            printf("单击\n");
-            tft_right();
-            break;
-        case D_KEY:
-            printf("双击\n");
-            tft_down();
-            break;
-        case L_KEY:
-            printf("长按\n");
-            break;
-        default:
-            break;
-        }
-        switch (get_key_mean(OK_KEY))
-        {
-        case N_KEY:
-            //printf("无键\n");
-            break;
-        case S_KEY:
-            printf("单击\n");
-            tft_ok();
-            break;
-        case D_KEY:
-            printf("双击\n");
-            break;
-        case L_KEY:
-            printf("长按\n");
-            break;
-        default:
-            break;
-        }
-        switch (get_key_mean(RET_KEY))
-        {
-        case N_KEY:
-            //printf("无键\n");
-            break;
-        case S_KEY:
-            printf("单击\n");
-            tft_ret();
-            break;
-        case D_KEY:
-            printf("双击\n");
-            break;
-        case L_KEY:
-            printf("长按\n");
-            break;
-        default:
-            break;
-        }
+
+        key_func();
     }
     return;
 }

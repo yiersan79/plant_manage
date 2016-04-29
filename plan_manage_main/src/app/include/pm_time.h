@@ -17,6 +17,7 @@ typedef struct calendar_info_
     uint16_t yday;
 } calendar_info;
 
+enum { START_YEAR = 2000, SEC_IN_DAY = 24 * 60 * 60};
 
 uint8_t is_leapyear(uint16_t year);
 

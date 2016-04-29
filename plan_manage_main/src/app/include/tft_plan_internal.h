@@ -34,3 +34,7 @@ enum { PLAN_DATA_NUM = 19 };
 extern plan_input plan_in[PLAN_DATA_NUM];
 
 extern kv_pair kvp_obj_set[][PLAN_DATA_NUM];
+
+
+
+void tft_to_plan_input(uint8_t objn);

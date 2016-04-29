@@ -150,7 +150,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     },  // 0
     {
@@ -159,7 +159,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 1
     {
@@ -168,7 +168,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 2
     {
@@ -177,7 +177,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 3
     {
@@ -186,7 +186,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 4
     {
@@ -195,7 +195,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 5
     {
@@ -204,7 +204,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 6
     {
@@ -213,7 +213,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "bg_h", 14, RW_NUM }, { "bg_mi", 0, RW_NUM }, { "ed_h", 14, RW_NUM }, { "ed_mi", 0, RW_NUM }, // 5~8
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
-        { "x", 0, RW_TXT }, { "y", 0, RW_TXT }, // 16~17
+        { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
         { "cnt", 0, R_NUM } //18
     }, // 7
 };
@@ -261,6 +261,8 @@ static void tft_set_color(uint8_t etn, tft_colour tft_col)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
             sprintf(tft_cmd_str, "%s.bco=%d", kvp_menu[etn].key, tft_col);
             tft_send_cmd(tft_cmd_str);
             sprintf(tft_cmd_str, "ref %s", kvp_menu[etn].key);
@@ -282,6 +284,8 @@ static void tft_set_color(uint8_t etn, tft_colour tft_col)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
             sprintf(tft_cmd_str, "%s.bco=%d", kvp_obj_set[tft_stt.objn][etn].key, tft_col);
             tft_send_cmd(tft_cmd_str);
             sprintf(tft_cmd_str, "ref %s", kvp_obj_set[tft_stt.objn][etn].key);
@@ -331,6 +335,8 @@ void tft_up(void)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
         case RW_PIC:
         case SW_PAGE:
             tft_set_color(etn_log, TFT_BACK);
@@ -352,6 +358,8 @@ void tft_up(void)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
         case RW_PIC:
         case SW_PAGE:
             tft_set_color(etn_log, TFT_BACK);
@@ -391,6 +399,8 @@ void tft_down(void)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
         case RW_PIC:
         case SW_PAGE:
             tft_set_color(etn_log, TFT_BACK);
@@ -411,6 +421,8 @@ void tft_down(void)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
         case RW_PIC:
         case SW_PAGE:
             tft_set_color(etn_log, TFT_BACK);
@@ -453,6 +465,8 @@ void tft_left(void)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
         case RW_PIC:
         case SW_PAGE:
             tft_set_color(etn_log, TFT_BACK);
@@ -474,6 +488,8 @@ void tft_left(void)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
         case RW_PIC:
         case SW_PAGE:
             tft_set_color(etn_log, TFT_BACK);
@@ -517,6 +533,8 @@ void tft_right(void)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
         case RW_PIC:
         case SW_PAGE:
             tft_set_color(etn_log, TFT_BACK);
@@ -539,6 +557,8 @@ void tft_right(void)
         {
         case R_NUM:
         case RW_NUM:
+        case R_TXT:
+        case RW_TXT:
         case RW_PIC:
         case SW_PAGE:
             tft_set_color(etn_log, TFT_BACK);
@@ -756,45 +776,29 @@ static void tft_input(void)
             break;
         case RW_TXT:
             tft_set_color(tft_stt.etn, TFT_RED);
-            in_lmt = tft_input_limit(kvp_obj_set[tft_stt.objn][tft_stt.etn].key);
-            bg_v = kvp_obj_set[tft_stt.objn][tft_stt.etn].value;
-            knob_enable();
-            uint8_t addr = 0;
-            if (strcmp(kvp_obj_set[tft_stt.objn][tft_stt.etn].key, "x") == 0)
-            {
-                addr = 0;
-            }
-            else
-            {
-                addr = 1;
-            }
             while (get_key_mean(RET_KEY) == N_KEY)
             {
-                in_v = bg_v + get_knob_val();
-                if (in_v < in_lmt.min)
+                if (get_key_mean(UP_KEY) == S_KEY)
                 {
-                    kvp_obj_set[tft_stt.objn][tft_stt.etn].value = in_lmt.min;
-                    bg_v = in_lmt.min;
-                    knob_clear();
+                    orient_setspeed(kvp_obj_set[tft_stt.objn][tft_stt.etn].value, ORIENT_LEFT, 100);
+                    sprintf(tft_cmd_str, "%s.txt=\"%s\"", kvp_obj_set[tft_stt.objn][tft_stt.etn].key,
+                            "左转");
+                    tft_send_cmd(tft_cmd_str);
                 }
-                else if (in_v > in_lmt.max)
+                else if (get_key_mean(DOWN_KEY))
                 {
-                    kvp_obj_set[tft_stt.objn][tft_stt.etn].value = in_lmt.max;
-                    bg_v = in_lmt.max;
-                    knob_clear();
+                    orient_setspeed(kvp_obj_set[tft_stt.objn][tft_stt.etn].value, ORIENT_RIGHT, 100);
+                    sprintf(tft_cmd_str, "%s.txt=\"%s\"", kvp_obj_set[tft_stt.objn][tft_stt.etn].key,
+                            "右转");
+                    tft_send_cmd(tft_cmd_str);
                 }
                 else
                 {
-                    kvp_obj_set[tft_stt.objn][tft_stt.etn].value = in_v;
+                    // 保持上一次循环
                 }
-                sprintf(tft_cmd_str, "%s.txt=\"%d\"", kvp_obj_set[tft_stt.objn][tft_stt.etn].key,
-                        kvp_obj_set[tft_stt.objn][tft_stt.etn].value);
-                tft_send_cmd(tft_cmd_str);
-                
-                orient_setspeed(addr, kvp_obj_set[tft_stt.objn][tft_stt.etn].value >= 0 ? ORIENT_RIGHT : ORIENT_LEFT, kvp_obj_set[tft_stt.objn][tft_stt.etn].value);
             }
-            orient_setmode(addr, MODE_MANUL);
-            knob_disable();
+            orient_setmode(kvp_obj_set[tft_stt.objn][tft_stt.etn].value, MODE_MANUL);       // 手动意为停止
+            orient_presetop(kvp_obj_set[tft_stt.objn][tft_stt.etn].value, PRESET_SET, tft_stt.objn + 1);
             tft_set_color(tft_stt.etn, TFT_PURPLE);
             clear_key_m();
             break;
@@ -843,6 +847,9 @@ void tft_ok(void)
         case RW_NUM:
             tft_input();
             break;
+        case RW_TXT:
+            tft_input();
+            break;
         case RW_PIC:
             tft_input();
             break;
@@ -863,6 +870,9 @@ void tft_ok(void)
         switch (kvp_obj_set[tft_stt.objn][tft_stt.etn].attr)
         {
         case R_NUM:
+            break;
+        case RW_TXT:
+            tft_input();
             break;
         case RW_NUM:
             tft_input();

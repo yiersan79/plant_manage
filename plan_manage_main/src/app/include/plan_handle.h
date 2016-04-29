@@ -11,4 +11,5 @@ void plan_handle_init(void);
 
 void plan_handle(void);
 
-void tft_to_plan_input(uint8_t objn);
+void key_func(void);
+

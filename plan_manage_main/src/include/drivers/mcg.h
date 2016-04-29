@@ -18,7 +18,7 @@
  * OSCILLATO_50     50MH¾§Õñ
  * OSCILLATO_8      8MH¾§Õñ
  */
-#define OSCILLATO_8
+#define OSCILLATO_50
 
 
 

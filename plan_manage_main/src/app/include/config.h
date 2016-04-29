@@ -24,7 +24,7 @@
 /*
  * ÔÆÌ¨
  */
-#define ORIENT_UARTX     UART1   // PTC3,PTC4
+#define ORIENT_UARTX     UART1   // PTC3,PTC4                                                                             
 #define RE_DE_PINX       PTC1
 
 /*

@@ -1907,12 +1907,6 @@
           <name>$PROJ_DIR$\..\src\app\include\debug.h</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\src\app\include\display.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\src\app\include\flash.h</name>
-        </file>
-        <file>
           <name>$PROJ_DIR$\..\src\app\include\input.h</name>
         </file>
         <file>
@@ -1931,6 +1925,15 @@
           <name>$PROJ_DIR$\..\src\app\include\plan_handle.h</name>
         </file>
         <file>
+          <name>$PROJ_DIR$\..\src\app\include\pm_flash.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\src\app\include\pm_flash_cfg.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\src\app\include\pm_init.h</name>
+        </file>
+        <file>
           <name>$PROJ_DIR$\..\src\app\include\pm_time.h</name>
         </file>
         <file>
@@ -1941,6 +1944,9 @@
         </file>
         <file>
           <name>$PROJ_DIR$\..\src\app\include\tft.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\src\app\include\tft_plan_internal.h</name>
         </file>
       </group>
       <file>
@@ -1960,12 +1966,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\main.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\src\app\NormalDemo_Flash.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\orient.c</name>

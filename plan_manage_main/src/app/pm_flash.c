@@ -139,7 +139,7 @@ void flash_write(uint8_t *saddr, uint16_t nbyte)
  *
  * flash读取函数的起始地址等于flash写入函数的写入起始地址
  */
-void flash_read(uint8_t *daddr, uint8_t nbyte)
+void flash_read(uint8_t *daddr, uint16_t nbyte)
 {
     uint8_t *saddr = (uint8_t *)(flashSSDConfig.PFlashBlockBase + BYTE2WORD(flashSSDConfig.PFlashBlockSize
             - (uint32_t)(USED_SECTOR_NUM * FTFx_PSECTOR_SIZE)));

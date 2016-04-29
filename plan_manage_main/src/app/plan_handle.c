@@ -1,16 +1,16 @@
 /*
- * plan_handle.c - è®¡åˆ’å¤„ç†æ¨¡å—
+ * plan_handle.c - ¼Æ»®´¦ÀíÄ£¿é
  *
- * è®¡åˆ’å¤„ç†ï¼ŒæŒ‡çš„æ˜¯æ ¹æ®å†…å­˜ä¸­çš„è®¡åˆ’æ•°æ®å’Œæ—¶é—´æ•°æ®å¾—å‡ºè¾“å‡ºæ•°æ®ï¼Œè¾“å‡ºæ•°æ®åŒ…æ‹¬ç»§ç”µå™¨ä¿¡
- * å·ã€æ¤ç‰©å±æ€§å€¼ã€‚
- * å…³äºæ¤ç‰©å±æ€§å€¼ï¼ŒåŒ…æ‹¬å·²å®Œæˆè®¡åˆ’å‘¨æœŸæ¬¡æ•°ï¼Œç­‰ã€‚
- * åŸºæœ¬åŸåˆ™æ˜¯ï¼Œèµ·å§‹å‘¨æœŸæ—¶é—´åŒºé—´åŠ ä¸Šé‡å¤å‘¨æœŸæ•°å¯ä»¥å¾—åˆ°ä¸€ä¸ªåŒºé—´é›†åˆï¼Œåˆ¤æ–­å½“å‰æ—¶é—´æ˜¯å¦
- * å±äºè¿™ä¸ªæ—¶é—´åŒºé—´é›†åˆä¸­çš„ä¸€ä¸ªåŒºé—´ä¸­çš„ä¸€ä¸ªæ—¶é—´ç‚¹ã€‚ç”±æ­¤å¾—åˆ°ç»§ç”µå™¨ä¿¡å·ï¼Œå¹¶åœ¨ç»§ç”µå™¨ä¿¡
- * å·è¢«ç½®ä¸ºæ— æ•ˆçš„æ—¶å€™å°†è®¡åˆ’å‘¨æœŸæ¬¡æ•°åŠ ä¸€ã€‚
- * éœ€è¦è§£å†³çš„é—®é¢˜æœ‰ï¼Œå¦‚ä½•è®¿é—®è®¡åˆ’æ•°æ®ä¸æ—¶é—´æ•°æ®ï¼Œä»¥åŠå¦‚ä½•å†™å…¥è¾“å‡ºæ•°æ®ã€‚
- * è®¡åˆ’æ•°æ®åœ¨tft.cæ¨¡å—ï¼Œå±äºé™æ€æ•°æ®ï¼Œå¦‚æœè¦è®¿é—®çš„è¯ï¼Œæœ‰ä¸¤ç§æ–¹å¼ï¼Œä¸€æ˜¯å£°æ˜è®¡åˆ’æ•°æ®
- * çš„ç±»å‹å¹¶è¿”å›å…¶æ•´ä½“åœ°å€ï¼Œä¸€ä¸ªæ•´ä½“åœ°å€å¯ä»¥è®¿é—®åˆ°æ‰€æœ‰çš„å¯¹è±¡å±æ€§ï¼Œä¸è¿‡éœ€è¦çŸ¥é“è¿™ä¸ªåœ°
- * å€ä¸Šæ•°æ®çš„åˆ†å¸ƒæƒ…å†µï¼Œéœ€è¦é¢å¤–çš„æ•°æ®ã€‚äºŒæ˜¯æ ¹æ®æ¯ä¸ªå…ƒç´ çš„åå­—é€šè¿‡æŸ¥è¯¢å¾—åˆ°å…¶å•ç‹¬çš„å€¼ã€‚
+ * ¼Æ»®´¦Àí£¬Ö¸µÄÊÇ¸ù¾İÄÚ´æÖĞµÄ¼Æ»®Êı¾İºÍÊ±¼äÊı¾İµÃ³öÊä³öÊı¾İ£¬Êä³öÊı¾İ°üÀ¨¼ÌµçÆ÷ĞÅ
+ * ºÅ¡¢Ö²ÎïÊôĞÔÖµ¡£
+ * ¹ØÓÚÖ²ÎïÊôĞÔÖµ£¬°üÀ¨ÒÑÍê³É¼Æ»®ÖÜÆÚ´ÎÊı£¬µÈ¡£
+ * »ù±¾Ô­ÔòÊÇ£¬ÆğÊ¼ÖÜÆÚÊ±¼äÇø¼ä¼ÓÉÏÖØ¸´ÖÜÆÚÊı¿ÉÒÔµÃµ½Ò»¸öÇø¼ä¼¯ºÏ£¬ÅĞ¶Ïµ±Ç°Ê±¼äÊÇ·ñ
+ * ÊôÓÚÕâ¸öÊ±¼äÇø¼ä¼¯ºÏÖĞµÄÒ»¸öÇø¼äÖĞµÄÒ»¸öÊ±¼äµã¡£ÓÉ´ËµÃµ½¼ÌµçÆ÷ĞÅºÅ£¬²¢ÔÚ¼ÌµçÆ÷ĞÅ
+ * ºÅ±»ÖÃÎªÎŞĞ§µÄÊ±ºò½«¼Æ»®ÖÜÆÚ´ÎÊı¼ÓÒ»¡£
+ * ĞèÒª½â¾öµÄÎÊÌâÓĞ£¬ÈçºÎ·ÃÎÊ¼Æ»®Êı¾İÓëÊ±¼äÊı¾İ£¬ÒÔ¼°ÈçºÎĞ´ÈëÊä³öÊı¾İ¡£
+ * ¼Æ»®Êı¾İÔÚtft.cÄ£¿é£¬ÊôÓÚ¾²Ì¬Êı¾İ£¬Èç¹ûÒª·ÃÎÊµÄ»°£¬ÓĞÁ½ÖÖ·½Ê½£¬Ò»ÊÇÉùÃ÷¼Æ»®Êı¾İ
+ * µÄÀàĞÍ²¢·µ»ØÆäÕûÌåµØÖ·£¬Ò»¸öÕûÌåµØÖ·¿ÉÒÔ·ÃÎÊµ½ËùÓĞµÄ¶ÔÏóÊôĞÔ£¬²»¹ıĞèÒªÖªµÀÕâ¸öµØ
+ * Ö·ÉÏÊı¾İµÄ·Ö²¼Çé¿ö£¬ĞèÒª¶îÍâµÄÊı¾İ¡£¶şÊÇ¸ù¾İÃ¿¸öÔªËØµÄÃû×ÖÍ¨¹ı²éÑ¯µÃµ½Æäµ¥¶ÀµÄÖµ¡£
  */
 
 #include <stdint.h>
@@ -23,6 +23,8 @@
 #include "include/tft.h"
 #include "include/config.h"
 #include "include/pm_flash.h"
+#include "include/orient.h"
+#include "include/key.h"
 
 typedef struct plan_output_
 {
@@ -32,8 +34,12 @@ typedef struct plan_output_
 
 
 static void indata_to_outdata(plan_input *ind, plan_output *outd);
-static void ctr_exe(uint8_t activity);
+static void plan_ctr_exe(uint8_t activity);
 static void plan_inpu_to_tft(void);
+static void plan_key_func(void);
+static void manul_key_func(void);
+static void manul_ctr(void);
+static void plan_ctr(void);
 
 static plan_output plan_out[PLAN_DATA_NUM] = { 0 };
 plan_input plan_in[PLAN_DATA_NUM] = { 0 };
@@ -46,10 +52,14 @@ void plan_handle_init(void)
     gpio_Interrupt_init(LGBLUE_PINX, GPO, GPI_DISAB);
     gpio_Interrupt_init(LGUVB_PINX, GPO, GPI_DISAB);
     gpio_Interrupt_init(WATER_PINX, GPO, GPI_DISAB);
-    // è¿˜æœ‰è®¾ç½®æ–¹å‘çš„åˆå§‹åŒ–
+
+    gpio_Interrupt_init(LG1_PINX, GPO, GPI_DISAB);
+    gpio_Interrupt_init(LG2_PINX, GPO, GPI_DISAB);
+    gpio_Interrupt_init(LG3_PINX, GPO, GPI_DISAB);
+    // »¹ÓĞÉèÖÃ·½ÏòµÄ³õÊ¼»¯
 
     /*
-     * æ•°æ®æ¢å¤ï¼Œæ•°æ®ä»ä»flashåˆ°plan_handleæ¨¡å—ï¼Œå†ä»plan_handleæ¨¡å—åˆ°tftæ¨¡å—
+     * Êı¾İ»Ö¸´£¬Êı¾İ´Ó´Óflashµ½plan_handleÄ£¿é£¬ÔÙ´Óplan_handleÄ£¿éµ½tftÄ£¿é
      */
     flash_read((uint8_t *)&plan_in, sizeof(plan_in));
     plan_inpu_to_tft();
@@ -64,11 +74,15 @@ static void indata_to_outdata(plan_input *ind, plan_output *outd)
     calendar_info st = get_system_time();
     uint32_t sys_sec = calendar_to_sec(&st);
 
+    ind->pd_t.year = START_YEAR;
+    ind->pd_t.month = 1;
+    ind->pd_t.mday = 1;
     uint32_t pd_sec = calendar_to_sec(&ind->pd_t);
-    uint32_t crt_bg_sec = calendar_to_sec(&ind->bg_t) + pd_sec * outd->cnt;
-    uint32_t crt_ed_sec = calendar_to_sec(&ind->ed_t) + pd_sec * outd->cnt;
 
-    if (crt_bg_sec < sys_sec && crt_ed_sec > sys_sec)
+    uint32_t ctr_bg_sec = calendar_to_sec(&ind->bg_t) + pd_sec * outd->cnt;
+    uint32_t ctr_ed_sec = calendar_to_sec(&ind->ed_t) + pd_sec * outd->cnt;
+
+    if (ctr_bg_sec < sys_sec && ctr_ed_sec > sys_sec)
     {
         outd->is_reach = 1;
     }
@@ -84,7 +98,7 @@ static void indata_to_outdata(plan_input *ind, plan_output *outd)
     return;
 }
 
-static void ctr_exe(uint8_t activity)
+static void plan_ctr_exe(uint8_t activity)
 {
     if (activity >= PLAN_DATA_NUM)
     {
@@ -95,7 +109,8 @@ static void ctr_exe(uint8_t activity)
     }
     else
     {
-        //set_orient(plan_in[activity].x_orient, plan_in[activity].y_orient);
+        orient_presetop(0, PRESET_CALL, activity + 1);
+        orient_presetop(1, PRESET_CALL, activity + 1);
         gpio_set(LGRED_PINX, plan_in[activity].lg_r);
         gpio_set(LGBLUE_PINX, plan_in[activity].lg_b);
         gpio_set(LGUVB_PINX, plan_in[activity].lg_uvb);
@@ -105,7 +120,7 @@ static void ctr_exe(uint8_t activity)
 }
 
 
-void plan_handle(void)
+void plan_ctr(void)
 {
     uint8_t activity = PLAN_DATA_NUM;
 
@@ -121,16 +136,48 @@ void plan_handle(void)
             }
         }
     }
-    ctr_exe(activity);
+    plan_ctr_exe(activity);
     return;
 }
 
 
+void plan_handle(void)
+{
+    if (gpio_get(AMS_KEY_PINX))
+    {
+        plan_ctr();
+    }
+    else
+    {
+        manul_ctr();
+    }
+    return;
+}
+
+void key_func(void)
+{
+    if (gpio_get(AMS_KEY_PINX))
+    {
+        plan_key_func();
+    }
+    else
+    {
+        manul_key_func();
+    }
+    return;
+}
+
+
+void manul_ctr(void)
+{
+    return;
+}
+
 /*
- * tft_to_plan_input() - å°†tftæ˜¾ç¤ºçš„æ•°æ®æå–åˆ°è®¡åˆ’å¤„ç†çš„è¾“å…¥æ•°æ®ç»“æ„ä¸­
- * @objn: æå–çš„å¯¹è±¡å·ï¼Œ0~7
+ * tft_to_plan_input() - ½«tftÏÔÊ¾µÄÊı¾İÌáÈ¡µ½¼Æ»®´¦ÀíµÄÊäÈëÊı¾İ½á¹¹ÖĞ
+ * @objn: ÌáÈ¡µÄ¶ÔÏóºÅ£¬0~7
  *
- * è¿™ä¸ªå‡½æ•°åº”è¯¥åœ¨tftè¾“å…¥æœ‰æ”¹å˜æ˜¯è¢«è°ƒç”¨ã€‚
+ * Õâ¸öº¯ÊıÓ¦¸ÃÔÚtftÊäÈëÓĞ¸Ä±äÊÇ±»µ÷ÓÃ¡£
  */
 void tft_to_plan_input(uint8_t objn)
 {
@@ -141,7 +188,7 @@ void tft_to_plan_input(uint8_t objn)
     plan_in[objn].bg_t.min = *get_value_of_kvp("bg_mi", objn);
 
     /*
-     * ç»“æŸæ—¶é—´åœ¨tftæ¡ç›®æ²¡æœ‰å¹´ã€æœˆã€æ—¥ï¼Œèµ‹å€¼ä¸ºä½•å¼€å§‹æ—¶é—´ç›¸åŒ
+     * ½áÊøÊ±¼äÔÚtftÌõÄ¿Ã»ÓĞÄê¡¢ÔÂ¡¢ÈÕ£¬¸³ÖµÎªºÎ¿ªÊ¼Ê±¼äÏàÍ¬
      */
     plan_in[objn].ed_t.year = plan_in[objn].bg_t.year;
     plan_in[objn].ed_t.month = plan_in[objn].bg_t.month;
@@ -165,9 +212,9 @@ void tft_to_plan_input(uint8_t objn)
 
 
 /*
- * plan_inpu_to_tft() - è®¡åˆ’æ•°æ®åˆ°tft
+ * plan_inpu_to_tft() - ¼Æ»®Êı¾İµ½tft
  *
- * è¿™ä¸ªå‡½æ•°æ˜¯ä¸ºäº†åœ¨åˆå§‹åŒ–æ—¶å°†ä»flashä¸­æ¢å¤çš„è®¡åˆ’æ•°æ®é‡æ–°è£…å…¥tft
+ * Õâ¸öº¯ÊıÊÇÎªÁËÔÚ³õÊ¼»¯Ê±½«´ÓflashÖĞ»Ö¸´µÄ¼Æ»®Êı¾İÖØĞÂ×°Èëtft
  */
 static void plan_inpu_to_tft(void)
 {
@@ -180,7 +227,7 @@ static void plan_inpu_to_tft(void)
         *get_value_of_kvp("bg_mi", objn) = plan_in[objn].bg_t.min;
 
         /*
-         * ç»“æŸæ—¶é—´åœ¨tftæ¡ç›®æ²¡æœ‰å¹´ã€æœˆã€æ—¥
+         * ½áÊøÊ±¼äÔÚtftÌõÄ¿Ã»ÓĞÄê¡¢ÔÂ¡¢ÈÕ
          * *get_value_of_kvp("ed_y", objn) = plan_in[objn].ed_t.year;
          * *get_value_of_kvp("ed_mo", objn) = plan_in[objn].ed_t.month;
          * *get_value_of_kvp("ed_d", objn) = plan_in[objn].ed_t.mday;
@@ -198,6 +245,282 @@ static void plan_inpu_to_tft(void)
         *get_value_of_kvp("water", objn) = plan_in[objn].water;
 
         *get_value_of_kvp("sw", objn) = plan_in[objn].sw;
+    }
+    return;
+}
+
+
+static void plan_key_func(void)
+{
+    /*
+     * °´¼ü¹¦ÄÜ×¢²á²¿·Ö
+     */
+    switch (get_key_mean(UP_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("UP_KEY µ¥»÷\n");
+        tft_left();
+        break;
+    case D_KEY:
+        printf("UP_KEY Ë«»÷\n");
+        tft_up();
+        break;
+    case L_KEY:
+        printf("UP_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(DOWN_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("DOWN_KEY µ¥»÷\n");
+        tft_right();
+        break;
+    case D_KEY:
+        printf("DOWN_KEY Ë«»÷\n");
+        tft_down();
+        break;
+    case L_KEY:
+        printf("DOWN_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(OK_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("OK_KEY µ¥»÷\n");
+        tft_ok();
+        break;
+    case D_KEY:
+        printf("OK_KEY Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("OK_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(RET_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("RET_KEY µ¥»÷\n");
+        tft_ret();
+        break;
+    case D_KEY:
+        printf("RET_KEY Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("RET_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(MR_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("MR_KEY µ¥»÷\n");
+        break;
+    case D_KEY:
+        printf("MR_KEY  Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("MR_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(MB_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("MB_KEY µ¥»÷\n");
+        break;
+    case D_KEY:
+        printf("MB_KEY Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("MB_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(MUVB_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("MUVB_KEY µ¥»÷\n");
+        break;
+    case D_KEY:
+        printf("MUVB_KEY Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("MUVB_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    return;
+}
+
+
+static void manul_key_func(void)
+{
+    /*
+     * °´¼ü¹¦ÄÜ×¢²á²¿·Ö
+     */
+    static uint8_t mlgr, mlgb, mlguvb;
+
+    switch (get_key_mean(UP_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("UP_KEY µ¥»÷\n");
+        orient_setspeed(0, ORIENT_LEFT, 100);
+        break;
+    case D_KEY:
+        printf("UP_KEY Ë«»÷\n");
+        orient_setspeed(0, ORIENT_RIGHT, 100);
+        break;
+    case L_KEY:
+        printf("UP_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(DOWN_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("DOWN_KEY µ¥»÷\n");
+        orient_setspeed(1, ORIENT_LEFT, 100);
+        break;
+    case D_KEY:
+        printf("DOWN_KEY Ë«»÷\n");
+        orient_setspeed(1, ORIENT_RIGHT, 100);
+        break;
+    case L_KEY:
+        printf("DOWN_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(OK_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("OK_KEY µ¥»÷\n");
+        break;
+    case D_KEY:
+        printf("OK_KEY Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("OK_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(RET_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("RET_KEY µ¥»÷\n");
+        orient_setmode(0, MODE_MANUL);
+        orient_setmode(1, MODE_MANUL);
+        break;
+    case D_KEY:
+        printf("RET_KEY Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("RET_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(MR_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("MR_KEY µ¥»÷\n");
+        mlgr = !mlgr;
+        gpio_set(LGRED_PINX, mlgr);
+        break;
+    case D_KEY:
+        printf("MR_KEY  Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("MR_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(MB_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("MB_KEY µ¥»÷\n");
+        mlgb = !mlgb;
+        gpio_set(LGBLUE_PINX, mlgb);
+        break;
+    case D_KEY:
+        printf("MB_KEY Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("MB_KEY ³¤°´\n");
+        break;
+    default:
+        break;
+    }
+    switch (get_key_mean(MUVB_KEY))
+    {
+    case N_KEY:
+        //printf("ÎŞ¼ü\n");
+        break;
+    case S_KEY:
+        printf("MUVB_KEY µ¥»÷\n");
+        mlguvb = !mlguvb;
+        gpio_set(LGUVB_PINX, mlguvb);
+        break;
+    case D_KEY:
+        printf("MUVB_KEY Ë«»÷\n");
+        break;
+    case L_KEY:
+        printf("MUVB_KEY ³¤°´\n");
+        break;
+    default:
+        break;
     }
     return;
 }

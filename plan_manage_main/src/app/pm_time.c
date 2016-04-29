@@ -11,7 +11,6 @@
 
 static calendar_info system_time;
 
-enum { START_YEAR = 2000, SEC_IN_DAY = 24 * 60 * 60};
 #define DAY_IN_YEAR(nyear)   (is_leapyear(nyear) ? 366 : 365)
 
 static const uint8_t day_leap[] = {
@@ -182,7 +181,7 @@ void ds1302_read_time(calendar_info *cal)
     rval = ds1302_single_read(2);
     cal->hour = (rval & 0x0f) + ((rval & 0x30) >> 4) * 10;
     rval = ds1302_single_read(3);
-    cal->mday = (rval & 0x0f) + ((rval & 0x10) >> 4) * 10;
+    cal->mday = (rval & 0x0f) + ((rval & 0x30) >> 4) * 10;
     rval = ds1302_single_read(4);
     cal->month = (rval & 0x0f) + ((rval & 0x10) >> 4) * 10;
     rval = ds1302_single_read(5);
