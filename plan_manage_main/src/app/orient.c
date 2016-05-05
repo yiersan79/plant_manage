@@ -15,6 +15,7 @@ void orient_init(void)
 {
     uart_init(ORIENT_UARTX, 2400);
     gpio_init(RE_DE_PINX, 1, 1);
+
     orient_setmode(0, MODE_MANUL);
     orient_setmode(1, MODE_MANUL);
     return;

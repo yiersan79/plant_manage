@@ -29,8 +29,13 @@
 typedef struct plan_output_
 {
     uint8_t is_reach;
-    uint8_t cnt;
+    uint8_t note[10];
 } plan_output;
+
+typedef enum lg_state_
+{
+    LIGHT = 1, NO_LIGHT = 0
+} lg_state;
 
 
 static void indata_to_outdata(plan_input *ind, plan_output *outd);
@@ -48,14 +53,14 @@ plan_input plan_in[PLAN_DATA_NUM] = { 0 };
 
 void plan_handle_init(void)
 {
-    gpio_Interrupt_init(LGRED_PINX, GPO, GPI_DISAB);
-    gpio_Interrupt_init(LGBLUE_PINX, GPO, GPI_DISAB);
-    gpio_Interrupt_init(LGUVB_PINX, GPO, GPI_DISAB);
-    gpio_Interrupt_init(WATER_PINX, GPO, GPI_DISAB);
+    gpio_init(LGRED_PINX, 1, NO_LIGHT);
+    gpio_init(LGBLUE_PINX, 1, NO_LIGHT);
+    gpio_init(LGUVB_PINX, 1, NO_LIGHT);
+    gpio_init(WATER_PINX, 1, 0);
 
-    gpio_Interrupt_init(LG1_PINX, GPO, GPI_DISAB);
-    gpio_Interrupt_init(LG2_PINX, GPO, GPI_DISAB);
-    gpio_Interrupt_init(LG3_PINX, GPO, GPI_DISAB);
+    gpio_init(LG1_PINX, 1, 1);
+    gpio_init(LG2_PINX, 1, 1);
+    gpio_init(LG3_PINX, 1, 1);
     // 还有设置方向的初始化
 
     /*
@@ -77,10 +82,11 @@ static void indata_to_outdata(plan_input *ind, plan_output *outd)
     ind->pd_t.year = START_YEAR;
     ind->pd_t.month = 1;
     ind->pd_t.mday = 1;
+    ind->pd_t.sec = 0;
     uint32_t pd_sec = calendar_to_sec(&ind->pd_t);
 
-    uint32_t ctr_bg_sec = calendar_to_sec(&ind->bg_t) + pd_sec * outd->cnt;
-    uint32_t ctr_ed_sec = calendar_to_sec(&ind->ed_t) + pd_sec * outd->cnt;
+    uint32_t ctr_bg_sec = calendar_to_sec(&ind->bg_t) + pd_sec * ind->cnt;
+    uint32_t ctr_ed_sec = calendar_to_sec(&ind->ed_t) + pd_sec * ind->cnt;
 
     if (ctr_bg_sec < sys_sec && ctr_ed_sec > sys_sec)
     {
@@ -90,7 +96,7 @@ static void indata_to_outdata(plan_input *ind, plan_output *outd)
     {
         if (outd->is_reach == 1)
         {
-            outd->cnt++;
+            ind->cnt++;
         }
         outd->is_reach = 0;
     }
@@ -98,23 +104,24 @@ static void indata_to_outdata(plan_input *ind, plan_output *outd)
     return;
 }
 
+
 static void plan_ctr_exe(uint8_t activity)
 {
     if (activity >= PLAN_DATA_NUM)
     {
-        gpio_set(LGRED_PINX, 0);
-        gpio_set(LGBLUE_PINX, 0);
-        gpio_set(LGUVB_PINX, 0);
-        gpio_set(WATER_PINX, 0);
+        gpio_set(LGRED_PINX, NO_LIGHT);
+        gpio_set(LGBLUE_PINX, NO_LIGHT);
+        gpio_set(LGUVB_PINX, NO_LIGHT);
+        gpio_set(WATER_PINX, NO_LIGHT);
     }
     else
     {
         orient_presetop(0, PRESET_CALL, activity + 1);
         orient_presetop(1, PRESET_CALL, activity + 1);
-        gpio_set(LGRED_PINX, plan_in[activity].lg_r);
-        gpio_set(LGBLUE_PINX, plan_in[activity].lg_b);
-        gpio_set(LGUVB_PINX, plan_in[activity].lg_uvb);
-        gpio_set(WATER_PINX, plan_in[activity].water);
+        gpio_set(LGRED_PINX, plan_in[activity].lg_r == 1 ? LIGHT : NO_LIGHT);
+        gpio_set(LGBLUE_PINX, plan_in[activity].lg_b == 1 ? LIGHT : NO_LIGHT);
+        gpio_set(LGUVB_PINX, plan_in[activity].lg_uvb == 1 ? LIGHT : NO_LIGHT);
+        gpio_set(WATER_PINX, plan_in[activity].water == 1 ? LIGHT : NO_LIGHT);
     }
     return;
 }
@@ -186,6 +193,7 @@ void tft_to_plan_input(uint8_t objn)
     plan_in[objn].bg_t.mday = *get_value_of_kvp("bg_d", objn);
     plan_in[objn].bg_t.hour = *get_value_of_kvp("bg_h", objn);
     plan_in[objn].bg_t.min = *get_value_of_kvp("bg_mi", objn);
+    plan_in[objn].bg_t.sec = 0;
 
     /*
      * 结束时间在tft条目没有年、月、日，赋值为何开始时间相同
@@ -195,17 +203,19 @@ void tft_to_plan_input(uint8_t objn)
     plan_in[objn].ed_t.mday = plan_in[objn].bg_t.mday;
     plan_in[objn].ed_t.hour = *get_value_of_kvp("ed_h", objn);
     plan_in[objn].ed_t.min = *get_value_of_kvp("ed_mi", objn);
+    plan_in[objn].ed_t.sec = 0;
 
     plan_in[objn].pd_t.mday = *get_value_of_kvp("pd_d", objn);
     plan_in[objn].pd_t.hour = *get_value_of_kvp("pd_h", objn);
     plan_in[objn].pd_t.min = *get_value_of_kvp("pd_mi", objn);
 
     plan_in[objn].lg_r = *get_value_of_kvp("lg_r", objn);
-    plan_in[objn].lg_b = *get_value_of_kvp("lg_b)", objn);
+    plan_in[objn].lg_b = *get_value_of_kvp("lg_b", objn);
     plan_in[objn].lg_uvb = *get_value_of_kvp("lg_uvb", objn);
     plan_in[objn].water = *get_value_of_kvp("water", objn);
 
     plan_in[objn].sw = *get_value_of_kvp("sw", objn);
+    plan_in[objn].cnt = *get_value_of_kvp("cnt", objn);
 
     return;
 }
@@ -245,6 +255,7 @@ static void plan_inpu_to_tft(void)
         *get_value_of_kvp("water", objn) = plan_in[objn].water;
 
         *get_value_of_kvp("sw", objn) = plan_in[objn].sw;
+        *get_value_of_kvp("cnt", objn) = plan_in[objn].cnt;
     }
     return;
 }
@@ -473,7 +484,7 @@ static void manul_key_func(void)
     case S_KEY:
         printf("MR_KEY 单击\n");
         mlgr = !mlgr;
-        gpio_set(LGRED_PINX, mlgr);
+        gpio_set(LGRED_PINX, mlgr == 1 ? LIGHT : NO_LIGHT);
         break;
     case D_KEY:
         printf("MR_KEY  双击\n");
@@ -492,7 +503,7 @@ static void manul_key_func(void)
     case S_KEY:
         printf("MB_KEY 单击\n");
         mlgb = !mlgb;
-        gpio_set(LGBLUE_PINX, mlgb);
+        gpio_set(LGBLUE_PINX, mlgb == 1 ? LIGHT : NO_LIGHT);
         break;
     case D_KEY:
         printf("MB_KEY 双击\n");
@@ -511,7 +522,7 @@ static void manul_key_func(void)
     case S_KEY:
         printf("MUVB_KEY 单击\n");
         mlguvb = !mlguvb;
-        gpio_set(LGUVB_PINX, mlguvb);
+        gpio_set(LGUVB_PINX, mlguvb == 1 ? LIGHT : NO_LIGHT);
         break;
     case D_KEY:
         printf("MUVB_KEY 双击\n");

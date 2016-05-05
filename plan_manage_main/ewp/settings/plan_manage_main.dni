@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-1025348935
+Checksum=-253352013
 [CodeCoverage]
 Enabled=_ 0
 [Exceptions]
@@ -99,7 +99,10 @@ SumSortOrder=0
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Count=0
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\src\app\tft.c}.728.13" 0 0 1 "" 0 "" 0
+Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\src\app\plan_handle.c}.213.5" 0 0 1 "" 0 "" 0
+Bp2=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\src\app\tft.c}.999.9" 0 0 1 "" 0 "" 0
+Count=3
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""

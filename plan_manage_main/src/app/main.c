@@ -21,20 +21,23 @@ void main(void)
 {
 
     printf("\n\n\n程序开始执行！！！\n\n\n");
-
+    enter_critical();
     pm_init();
+    exit_critical();
 
     st_init(0, COMPARE, 10);    // 作为按键扫描函数的定时使用，在simulat_timer.c的底层中使用
     st_init(1, COMPARE, 100);
 
+#ifdef PM_DEBUG
     st_init(2, COMPARE, 1);
     st_init(3, COMPARE, 500);
+#endif /* PM_DEBUG */
 
     knob_enable();
 
 
-    
-    
+
+
     while (1)
     {
         /*
@@ -56,6 +59,7 @@ void main(void)
             plan_handle();
         }
 
+#ifdef PM_DEBUG
         /*
          * 调试相关，较短时间响应
          */
@@ -81,11 +85,11 @@ void main(void)
                     st.hour, st.min, st.sec);
             printf("sec = %d\n", calendar_to_sec(&st));
             calendar_info test_t;
-            test_t.year = START_YEAR;
-            test_t.month = 1;
-            test_t.mday = 1;
-            test_t.hour = 0;
-            test_t.min = 0;
+            test_t.year = 2016;
+            test_t.month = 5;
+            test_t.mday = 5;
+            test_t.hour = 12;
+            test_t.min = 25;
             test_t.sec = 0;
             uint32_t test_sec = calendar_to_sec(&test_t);
             printf("test_sec = %d\n", test_sec);
@@ -105,6 +109,7 @@ void main(void)
                 printf("手动!!!!!!\n");
             }
         }
+#endif /* PM_DEBUG */
 
         key_func();
     }

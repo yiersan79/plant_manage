@@ -8,6 +8,10 @@
 
 
 
+#define PM_DEBUG
+
+
+
 
 /*
  * 模拟定时器使用的定时器
@@ -37,8 +41,8 @@
 #define AMS_KEY_PINX    PTD5
 #define WIFI_KEY_PINX   PTD7
 #define MR_KEY_PINX     PTE23
-#define MB_KEY_PINX     PTA16
-#define MUVB_KEY_PINX   PTD4
+#define MB_KEY_PINX     PTD4
+#define MUVB_KEY_PINX   PTA16
 // knob用必须是PTA或PTD端口的
 #define KNOB_A_PINX     PTD7
 #define KNOB_B_PINX     PTD6
@@ -64,8 +68,8 @@
  *
  */
 #define LGRED_PINX      PTC17
-#define LGBLUE_PINX     PTC16
-#define LGUVB_PINX      PTC13
+#define LGBLUE_PINX     PTC13
+#define LGUVB_PINX      PTC16
 #define WATER_PINX      PTD1
 
 /*

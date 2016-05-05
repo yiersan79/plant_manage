@@ -20,6 +20,7 @@ typedef struct plan_input_
     uint8_t lg_uvb : 1;
     uint8_t water : 1;
     uint8_t sw : 1;
+    uint8_t cnt;
 } plan_input;
 
 typedef struct kv_pair_

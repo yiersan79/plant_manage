@@ -151,7 +151,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
         { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
-        { "cnt", 0, R_NUM } //18
+        { "cnt", 0, RW_NUM } //18
     },  // 0
     {
         { "ob", 2, R_NUM}, { "sw", 1, RW_PIC },// 0~1
@@ -160,7 +160,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
         { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
-        { "cnt", 0, R_NUM } //18
+        { "cnt", 0, RW_NUM } //18
     }, // 1
     {
         { "ob", 3, R_NUM}, { "sw", 1, RW_PIC },// 0~1
@@ -169,7 +169,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
         { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
-        { "cnt", 0, R_NUM } //18
+        { "cnt", 0, RW_NUM } //18
     }, // 2
     {
         { "ob", 4, R_NUM}, { "sw", 1, RW_PIC },// 0~1
@@ -178,7 +178,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
         { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
-        { "cnt", 0, R_NUM } //18
+        { "cnt", 0, RW_NUM } //18
     }, // 3
     {
         { "ob", 5, R_NUM}, { "sw", 1, RW_PIC },// 0~1
@@ -187,7 +187,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
         { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
-        { "cnt", 0, R_NUM } //18
+        { "cnt", 0, RW_NUM } //18
     }, // 4
     {
         { "ob", 6, R_NUM}, { "sw", 1, RW_PIC },// 0~1
@@ -196,7 +196,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
         { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
-        { "cnt", 0, R_NUM } //18
+        { "cnt", 0, RW_NUM } //18
     }, // 5
     {
         { "ob", 7, R_NUM}, { "sw", 1, RW_PIC },// 0~1
@@ -205,7 +205,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
         { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
-        { "cnt", 0, R_NUM } //18
+        { "cnt", 0, RW_NUM } //18
     }, // 6
     {
         { "ob", 8, R_NUM}, { "sw", 1, RW_PIC },// 0~1
@@ -214,7 +214,7 @@ kv_pair kvp_obj_set[][PLAN_DATA_NUM] =
         { "lg_r", 0, RW_PIC}, { "lg_b", 0, RW_PIC }, { "lg_uvb", 0, RW_PIC }, { "water", 0, RW_PIC }, // 9~12
         { "pd_d", 3, RW_NUM }, { "pd_h", 3, RW_NUM }, { "pd_mi", 3, RW_NUM }, // 13~15
         { "x", 0, RW_TXT }, { "y", 1, RW_TXT }, // 16~17
-        { "cnt", 0, R_NUM } //18
+        { "cnt", 0, RW_NUM } //18
     }, // 7
 };
 
@@ -1096,6 +1096,11 @@ input_limit tft_input_limit(char *name)
     {
         in_lmt.min = 0;
         in_lmt.max = 359;
+    }
+    else if (strcmp(name, "cnt") == 0)
+    {
+        in_lmt.min = 0;
+        in_lmt.max = 1000;
     }
     else
     {
