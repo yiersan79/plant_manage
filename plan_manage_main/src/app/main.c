@@ -36,8 +36,6 @@ void main(void)
     knob_enable();
 
 
-
-
     while (1)
     {
         /*
@@ -84,16 +82,7 @@ void main(void)
                     st.year, st.month, st.wday, st.mday,
                     st.hour, st.min, st.sec);
             printf("sec = %d\n", calendar_to_sec(&st));
-            calendar_info test_t;
-            test_t.year = 2016;
-            test_t.month = 5;
-            test_t.mday = 5;
-            test_t.hour = 12;
-            test_t.min = 25;
-            test_t.sec = 0;
-            uint32_t test_sec = calendar_to_sec(&test_t);
-            printf("test_sec = %d\n", test_sec);
-            
+
             static uint8_t lg_test;
             lg_test = !lg_test;
             gpio_set(LG1_PINX, 0);

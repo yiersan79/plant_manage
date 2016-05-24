@@ -94,6 +94,10 @@
 
 
 
+/*
+ * tft_state - 在tft操作中，表示当前状态机的状态的类型
+ * pgn表示页面编号，etn、ln分别一个页面中的元素号、行号，objn表示元素号。
+ */
 typedef struct tft_state_
 {
     uint8_t pgn;
@@ -892,12 +896,16 @@ void tft_ok(void)
     return;
 }
 
+/*
+ * tft_page_refresh() - 在页面信息有改变时调用以刷新页面
+ */
 void tft_page_refresh(void)
 {
     switch (tft_stt.pgn)
     {
     case ORIGINAL_PG:
-        for (uint8_t etn = 0; etn < sizeof(kvp_original) / sizeof(kv_pair); etn++)
+        for (uint8_t etn = 0; etn < sizeof(kvp_original) / sizeof(kv_pair);
+                etn++)
         {
             switch (SW_PAGE)
             {
@@ -915,7 +923,8 @@ void tft_page_refresh(void)
         }
         break;
     case MENU_PG:
-        for (int etn = 0; etn < sizeof(kvp_menu) / sizeof(kv_pair); etn++)
+        for (int etn = 0; etn < sizeof(kvp_menu) / sizeof(kv_pair);
+                etn++)
         {
             switch (kvp_menu[etn].attr)
             {
@@ -940,16 +949,19 @@ void tft_page_refresh(void)
         }
         break;
     case OBJ_SET_PG:
-        for (int etn = 0; etn < sizeof(kvp_obj_set[0]) / sizeof(kv_pair); etn++)
+        for (int etn = 0; etn < sizeof(kvp_obj_set[0]) / sizeof(kv_pair);
+                etn++)
         {
             switch (kvp_obj_set[tft_stt.objn][etn].attr)
             {
             case R_NUM:
             case RW_NUM:
-                sprintf(tft_cmd_str, "%s.val=%d", kvp_obj_set[tft_stt.objn][etn].key,
+                sprintf(tft_cmd_str, "%s.val=%d",
+                        kvp_obj_set[tft_stt.objn][etn].key,
                         kvp_obj_set[tft_stt.objn][etn].value);
                 tft_send_cmd(tft_cmd_str);
-                sprintf(tft_cmd_str, "ref %s", kvp_obj_set[tft_stt.objn][etn].key);
+                sprintf(tft_cmd_str, "ref %s",
+                        kvp_obj_set[tft_stt.objn][etn].key);
                 tft_send_cmd(tft_cmd_str);
                 break;
             case RW_PIC:

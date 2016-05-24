@@ -28,7 +28,7 @@
 /*
  * ÔÆÌ¨
  */
-#define ORIENT_UARTX     UART1   // PTC3,PTC4                                                                             
+#define ORIENT_UARTX     UART1   // PTC3,PTC4
 #define RE_DE_PINX       PTC1
 
 /*
@@ -47,6 +47,8 @@
 #define KNOB_A_PINX     PTD7
 #define KNOB_B_PINX     PTD6
 #define KNOB_KEY_PINX   PTE20
+
+#define MOISTURE_ADC0_CHN   ADC0_DP1    // PTE16
 
 
 

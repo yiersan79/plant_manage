@@ -183,9 +183,6 @@
           <name>$PROJ_DIR$\..\src\app\include\debug.h</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\src\app\include\input.h</name>
-        </file>
-        <file>
           <name>$PROJ_DIR$\..\src\app\include\isr.h</name>
         </file>
         <file>
@@ -224,12 +221,12 @@
         <file>
           <name>$PROJ_DIR$\..\src\app\include\tft_plan_internal.h</name>
         </file>
+        <file>
+          <name>$PROJ_DIR$\..\src\app\include\water.h</name>
+        </file>
       </group>
       <file>
         <name>$PROJ_DIR$\..\src\app\debug.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\src\app\input.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\isr.c</name>
@@ -266,6 +263,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\src\app\tft.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\src\app\water.c</name>
       </file>
     </group>
     <group>
