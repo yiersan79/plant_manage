@@ -24,8 +24,10 @@ void main(void)
     enter_critical();
     pm_init();
     exit_critical();
-
-    st_init(0, COMPARE, 10);    // 作为按键扫描函数的定时使用，在simulat_timer.c的底层中使用
+    /*
+     * 作为按键扫描函数的定时使用，在simulat_timer.c的底层中使用
+     */
+    st_init(0, COMPARE, 10);
     st_init(1, COMPARE, 100);
 
 #ifdef PM_DEBUG

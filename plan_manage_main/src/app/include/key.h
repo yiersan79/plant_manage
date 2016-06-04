@@ -7,6 +7,10 @@
 #define KEY_H
 
 
+/*
+ * key_mean - 按键的状态标志符号
+ * N_KEY表示无键按下状态，S_KEY表示单击，D_KEY表示双击，L_KEY表示长按
+ */
 typedef enum key_mean_
 {
     N_KEY = 0, S_KEY, D_KEY, L_KEY
@@ -24,32 +28,10 @@ typedef enum key_type_
 
 
 
-/*
- * key_init() - 按键模块初始化
- *
- */
+
 void key_init(void);
-
-
-/*
- * key_detect() - 检测按键
- *
- * 要求每隔10ms调用一次
- */
 void key_detect(void);
-
-
-
-/*
- * get_key_mean() - 得到指定的按键信息
- *
- * 这个函数中在取得信息后会将对应按键重新标记为N_KEY
- */
 key_mean get_key_mean(key_type key_t);
-
-
-
-
 void clear_key_m(void);
 
 

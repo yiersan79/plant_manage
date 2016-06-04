@@ -4,15 +4,16 @@
 
 #include "include.h"
 
-#include "include/simulat_timer.h"
 #include "include/config.h"
 #include "include/key.h"
+
+#include "include/simulat_timer.h"
 
 static volatile st_register st_r[SIMULAT_TIMER_NUM];
 
 
 
-/*
+/**
  * st_init() - 初始化实现模拟定时器所需的pit定时器
  *
  * 基础定时为1ms
@@ -27,7 +28,7 @@ void st_base_init(void)
 }
 
 
-/*
+/**
  * st_init() - 初始化一个给定编号的模拟定时器
  * @n: 定时器编号
  * @st_m: 定时模式
@@ -58,7 +59,7 @@ uint8_t st_init(uint8_t n, st_mode st_m, uint32_t cmr_v)
 }
 
 
-/*
+/**
  * st_close() - 关闭一个给定编号的模拟定时器
  * @n: 定时器编号
  */
@@ -68,7 +69,7 @@ void st_close(uint8_t n)
     return;
 }
 
-/*
+/**
  * st_tcf() - 查询tcf位返回
  * @n: 定时器编号
  *
@@ -90,7 +91,7 @@ uint8_t st_tcf(uint8_t n)
     return temp;
 }
 
-/*
+/**
  * st_tov() - 查询tov位返回
  * @n: 定时器编号
  *
@@ -111,7 +112,7 @@ uint8_t st_tov(uint8_t n)
     return temp;
 }
 
-/*
+/**
  * st_count() - 查询当前模拟定时值
  * @n: 定时器编号
  *
@@ -123,7 +124,7 @@ uint32_t st_count(uint8_t n)
 }
 
 
-/*
+/**
  * st_base() -定时调用以模拟N路定时器
  *
  * 定时的最小间隔等于这个函数被调用的周期

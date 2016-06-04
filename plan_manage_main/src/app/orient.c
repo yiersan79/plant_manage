@@ -53,7 +53,7 @@ void orient_setspeed(uint8_t addr, orient ori, uint8_t spd)
     {
          spd = 100;
     }
-    cmd[4] = 0x3f * spd / 100;
+    cmd[4] = (uint16_t)0x3f * spd / 100;
     cmd[6] = cmd[1] + cmd[2] + cmd[3] + cmd[4] + cmd[5];
 
     uart_sendN(ORIENT_UARTX, cmd, 7);

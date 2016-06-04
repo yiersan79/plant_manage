@@ -14,11 +14,7 @@
 
 
 void water_init(void);
-
-
 uint16_t get_moisture(void);
-
-
 void water_ctr(uint16_t sv_moist);
 
 

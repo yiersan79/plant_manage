@@ -8,7 +8,7 @@
 #include "include/config.h"
 
 
-
+// 被维护的系统时间
 static calendar_info system_time;
 
 #define DAY_IN_YEAR(nyear)   (is_leapyear(nyear) ? 366 : 365)
@@ -23,22 +23,59 @@ static const uint8_t day_noleap[] = {
 
 
 
+/*
+ * 静态函数声明
+ */
 static void ds1302_byte_write(uint8_t data);
 static uint8_t ds1302_byte_read(void);
 static uint8_t ds1302_single_read(uint8_t addr);
-static uint8_t ds1302_single_read(uint8_t addr);
+void ds1302_single_write(uint8_t addr, uint8_t data);
 static int16_t ymd_to_wday(int16_t year, int16_t month, int16_t mday);
 
 
+/**
+ * ds1302_init() - ds1302的初始化
+ *
+ * 包括io的初始化以及当ds1302掉电时对其时间值设置初始值
+ */
+void ds1302_init(void)
+{
+    //gpio_Interrupt_init(DS1302_CE_PINX, GPO, GPI_DISAB);
+    //gpio_Interrupt_init(DS1302_CLK_PINX, GPO, GPI_DISAB);
+    gpio_init(DS1302_CE_PINX, 1, 0);
+    gpio_init(DS1302_CLK_PINX, 1, 0);
+    gpio_Interrupt_init(DS1302_IO_PINX, GPI_UP_PF, GPI_DISAB);
+
+    // 使能写
+    ds1302_single_write(7, 0x00);
+    // 当ds1302掉电时设置时间初始值
+    if ((ds1302_single_read(0) & 0x80) == 1)
+    {
+        calendar_info sys_cal = { 0, 1, 2, 3, 4, 2012, 0, 1 };
+        ds1302_set_time(&sys_cal);
+    }
+    return;
+}
 
 
-
-
+/**
+ * is_leapyear() - 判断是否为闰年
+ * @year: 要判断的年份
+ *
+ * 是闰年返回1，不是闰年返回0
+ */
 uint8_t is_leapyear(uint16_t year)
 {
     return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
+/**
+ * get_month_days() - 得到给定年份和月份时对应月份的天数
+ * @year: 给定年份
+ * @month: 给定月份
+ *
+ * 返回值为对应的月份的天数
+ */
 uint8_t get_month_days(uint16_t year, uint8_t month)
 {
     switch (month)
@@ -58,6 +95,10 @@ uint8_t get_month_days(uint16_t year, uint8_t month)
     }
 }
 
+/**
+ * ds1302_byte_write() - 向ds1302写入一个字节
+ * @data: 要写入的字节
+ */
 static void ds1302_byte_write(uint8_t data)
 {
     gpio_init(DS1302_IO_PINX, 1, 0);
@@ -81,6 +122,11 @@ static void ds1302_byte_write(uint8_t data)
     return;
 }
 
+/**
+ * ds1302_byte_read() - 从ds1302读取一个字节
+ *
+ * 返回读取到的字节
+ */
 static uint8_t ds1302_byte_read(void)
 {
     uint8_t data = 0;
@@ -109,7 +155,12 @@ static uint8_t ds1302_byte_read(void)
 
 
 
-
+/**
+ * ds1302_single_read() - ds1302在单字节模式下读取一个地址上的数据
+ * @addr: 要读取的地址
+ *
+ * 返回读取的到的字节值
+ */
 static uint8_t ds1302_single_read(uint8_t addr)
 {
     uint8_t cmd = 0,
@@ -135,6 +186,11 @@ static uint8_t ds1302_single_read(uint8_t addr)
     return data;
 }
 
+/**
+ * ds1302_single_write() - 在单字节模式下向ds1302的一个地址上写入一个字节的数据
+ * @addr: 要写入数据的地址
+ * @data: 要写入的数据
+ */
 void ds1302_single_write(uint8_t addr, uint8_t data)
 {
     uint8_t cmd = 0;
@@ -157,6 +213,10 @@ void ds1302_single_write(uint8_t addr, uint8_t data)
     return;
 }
 
+/**
+ * ds1302_set_time() - 向ds1302中写入时间
+ * @cal: 要写入的时间值地址
+ */
 void ds1302_set_time(calendar_info *cal)
 {
     ds1302_single_write(7, 0x00);
@@ -170,6 +230,10 @@ void ds1302_set_time(calendar_info *cal)
     return;
 }
 
+/**
+ * ds1302_read_time() - 从ds1302中读取时间
+ * @cal: 读取的时间值被存放的地址
+ */
 void ds1302_read_time(calendar_info *cal)
 {
     uint8_t rval;
@@ -192,25 +256,9 @@ void ds1302_read_time(calendar_info *cal)
     return;
 }
 
-void ds1302_init(void)
-{
-    //gpio_Interrupt_init(DS1302_CE_PINX, GPO, GPI_DISAB);
-    //gpio_Interrupt_init(DS1302_CLK_PINX, GPO, GPI_DISAB);
-    gpio_init(DS1302_CE_PINX, 1, 0);
-    gpio_init(DS1302_CLK_PINX, 1, 0);
-    gpio_Interrupt_init(DS1302_IO_PINX, GPI_UP_PF, GPI_DISAB);
-    ds1302_single_write(7, 0x00);
-    if ((ds1302_single_read(0) & 0x80) == 1)
-    {
-        calendar_info sys_cal = { 0, 1, 2, 3, 4, 2012, 0, 1 };
-        ds1302_set_time(&sys_cal);
-    }
-    return;
-}
-
-
-
-/*
+/**
+ * maintain_system_time() - 设置系统时间变量
+ *
  * 这个函数需要按所需的时间精度来定时调用
  */
 void maintain_system_time(void)
@@ -221,6 +269,9 @@ void maintain_system_time(void)
     return;
 }
 
+/**
+ * get_system_time() - 返回系统时间
+ */
 calendar_info get_system_time(void)
 {
     return system_time;
@@ -228,9 +279,13 @@ calendar_info get_system_time(void)
 
 
 
-/*************************************************************/
 
-
+/**
+ * calendar_to_sec() - 分解时间到日历时间的转换
+ * @cal: 被转换的分解时间
+ *
+ * 返回的是日历时间，即从某一个时间点到当前转换时间所经过的秒数
+ */
 uint32_t calendar_to_sec(calendar_info *cal)
 {
     uint32_t sec = cal->sec;
@@ -264,6 +319,12 @@ uint32_t calendar_to_sec(calendar_info *cal)
     return sec;
 }
 
+/**
+ * sec_to_calendar() - 日历时间到分解时间的转换
+ * @cal: 被转换的日历时间
+ *
+ * 返回的是分解时间，即以年月日时分秒形式表示的时间
+ */
 calendar_info sec_to_calendar(uint32_t sec)
 {
     calendar_info cal;
@@ -309,7 +370,14 @@ calendar_info sec_to_calendar(uint32_t sec)
     return cal;
 }
 
-
+/**
+ * ymd_to_wday() - 从年份、月份、天数这三个数据得到对应在一个星期中的天数
+ * @year: 年份
+ * @month: 月份
+ * @mday: 当前月中已经过的天数
+ *
+ * 返回对应的一个星期中的天数
+ */
 static int16_t ymd_to_wday(int16_t year, int16_t month, int16_t mday)
 {
     if (is_leapyear(year))

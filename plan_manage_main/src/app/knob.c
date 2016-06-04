@@ -7,10 +7,11 @@
 #include <stdint.h>
 
 #include "include.h"
+#include "arm_cm0.h"
+#include "vectors.h"
 
-
-#include "include/knob.h"
 #include "include/config.h"
+#include "include/knob.h"
 
 
 
@@ -48,7 +49,7 @@ void knob_enable(void)
  */
 void knob_disable(void)
 {
-    disable_irq(PortA_irq_no);
+    disable_irq(PortD_irq_no);
     return;
 }
 
@@ -87,7 +88,8 @@ void knob_detect(void)
     {
         knob_val++;
     }
-    else // ¼´if ((knob_A == 0 && knob_B == 0) || (knob_A == 1 && knob_B == 1))
+    // ¼´if ((knob_A == 0 && knob_B == 0) || (knob_A == 1 && knob_B == 1))
+    else 
     {
         knob_val--;
     }
