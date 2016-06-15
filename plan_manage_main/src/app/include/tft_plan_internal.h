@@ -4,6 +4,10 @@
  * 这个文件只应包含在tft和plan_handle模块
  */
 
+#ifndef TFT_PLAN_INTERNAL_H
+#define TFT_PLAN_INTERNAL_H
+
+
 #include "include/pm_time.h"
 
 /*
@@ -46,3 +50,6 @@ extern kv_pair kvp_obj_set[][PLAN_DATA_NUM];
 
 
 void tft_to_plan_input(uint8_t objn);
+
+
+#endif /* TFT_PLAN_INTERNAL_H */

@@ -2,6 +2,10 @@
  * time.h - 时间处理
  */
 
+#ifndef TIME_H
+#define TIME_H
+
+
 #include <stdint.h>
 
 
@@ -32,3 +36,6 @@ void maintain_system_time(void);
 calendar_info get_system_time(void);
 uint32_t calendar_to_sec(calendar_info *cal);
 calendar_info sec_to_calendar(uint32_t sec);
+
+
+#endif /* TIME_H */

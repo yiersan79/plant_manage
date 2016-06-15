@@ -210,9 +210,6 @@
           <name>$PROJ_DIR$\..\src\app\include\pm_time.h</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\src\app\include\setup.h</name>
-        </file>
-        <file>
           <name>$PROJ_DIR$\..\src\app\include\simulat_timer.h</name>
         </file>
         <file>

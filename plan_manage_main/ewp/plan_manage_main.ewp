@@ -17,15 +17,15 @@
         <debug>1</debug>
         <option>
           <name>ExePath</name>
-          <state>..\Debug\Exe</state>
+          <state>..\out\Debug\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>..\Debug\Obj</state>
+          <state>..\out\Debug\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>..\Debug\List</state>
+          <state>..\out\Debug\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -968,20 +968,20 @@
         <debug>0</debug>
         <option>
           <name>ExePath</name>
-          <state>Release\Exe</state>
+          <state>..\out\Release\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>Release\Obj</state>
+          <state>..\out\Release\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>Release\List</state>
+          <state>..\out\Release\List</state>
         </option>
         <option>
           <name>Variant</name>
           <version>20</version>
-          <state>0</state>
+          <state>35</state>
         </option>
         <option>
           <name>GEndianMode</name>
@@ -994,7 +994,7 @@
         </option>
         <option>
           <name>Input description</name>
-          <state></state>
+          <state>Automatic choice of formatter.</state>
         </option>
         <option>
           <name>Output variant</name>
@@ -1003,7 +1003,7 @@
         </option>
         <option>
           <name>Output description</name>
-          <state></state>
+          <state>Automatic choice of formatter.</state>
         </option>
         <option>
           <name>GOutputBinary</name>
@@ -1016,7 +1016,7 @@
         </option>
         <option>
           <name>OGCoreOrChip</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelect</name>
@@ -1030,7 +1030,7 @@
         </option>
         <option>
           <name>RTDescription</name>
-          <state></state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>OGProductVersion</name>
@@ -1038,7 +1038,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state></state>
+          <state>7.20.2.7418</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -1050,7 +1050,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state></state>
+          <state>MKL25Z128xxx4	Freescale MKL25Z128xxx4</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -1058,7 +1058,7 @@
         </option>
         <option>
           <name>GEndianModeBE</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OGBufferedTerminalOutput</name>
@@ -1084,17 +1084,17 @@
         </option>
         <option>
           <name>RTConfigPath2</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Normal.h</state>
         </option>
         <option>
           <name>GFPUCoreSlave</name>
           <version>20</version>
-          <state>1</state>
+          <state>35</state>
         </option>
         <option>
           <name>GBECoreSlave</name>
           <version>20</version>
-          <state>1</state>
+          <state>35</state>
         </option>
         <option>
           <name>OGUseCmsis</name>
@@ -1119,7 +1119,10 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>NDEBUG</state>
+          <state>NODEBUG</state>
+          <state>IAR</state>
+          <state>MKL25Z4</state>
+          <state>TWR_KL25Z48M</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1232,7 +1235,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.o</state>
         </option>
         <option>
           <name>CCLibConfigHeader</name>
@@ -1248,7 +1251,13 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state></state>
+          <state>$PROJ_DIR$\..\src\app\include</state>
+          <state>$PROJ_DIR$\..\src\include\common</state>
+          <state>$PROJ_DIR$\..\src\include\cpu</state>
+          <state>$PROJ_DIR$\..\src\include\drivers</state>
+          <state>$PROJ_DIR$\..\src\include\drivers\FTFx</state>
+          <state>$PROJ_DIR$\..\src\include\platforms</state>
+          <state>$TOOLKIT_DIR$\inc</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1277,7 +1286,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>1</state>
+          <state>3</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -1490,7 +1499,7 @@
         </option>
         <option>
           <name>AOutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.o</state>
         </option>
         <option>
           <name>AMultibyteSupport</name>
@@ -1598,7 +1607,7 @@
         </option>
         <option>
           <name>IlinkOutputFile</name>
-          <state>###Unitialized###</state>
+          <state>plan_manage_main.out</state>
         </option>
         <option>
           <name>IlinkDebugInfoEnable</name>
@@ -1658,11 +1667,11 @@
         </option>
         <option>
           <name>IlinkIcfOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>lnk0t.icf</state>
+          <state>F:\work_space\graduation_pro\plan_manage\plan_manage_main\config_files\128KB_Pflash.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -1722,7 +1731,7 @@
         </option>
         <option>
           <name>IlinkProgramEntryLabel</name>
-          <state></state>
+          <state>__iar_program_start</state>
         </option>
         <option>
           <name>DoFill</name>
@@ -1932,9 +1941,6 @@
         </file>
         <file>
           <name>$PROJ_DIR$\..\src\app\include\pm_time.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\src\app\include\setup.h</name>
         </file>
         <file>
           <name>$PROJ_DIR$\..\src\app\include\simulat_timer.h</name>

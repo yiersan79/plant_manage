@@ -3,7 +3,17 @@
  */
 
 
+#ifndef PM_INIT_H
+#define PM_INIT_H
+
 /*
  * pm_init() - ≥ı ºªØ
  */
 void pm_init(void);
+
+
+
+
+
+
+#endif /* PM_INIT_H */
